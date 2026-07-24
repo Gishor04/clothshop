@@ -26,24 +26,30 @@ router.post('/', protect, async (req, res) => {
       orderStatus: 'pending',
     });
 
-    // Decrement stock for each product/size
+    // Decrement stock for each product/size safely
     for (const item of products) {
-      await Product.updateOne(
-        { _id: item.productId, 'sizes.size': item.size },
-        { $inc: { 'sizes.$.stock': -item.quantity } }
-      );
-      // Recalculate stockQuantity
-      const prod = await Product.findById(item.productId);
-      if (prod) {
-        prod.stockQuantity = prod.sizes.reduce((s, sz) => s + sz.stock, 0);
-        if (prod.stockQuantity === 0) prod.isOutOfStock = true;
-        await prod.save();
+      if (item.productId && item.size) {
+        try {
+          await Product.updateOne(
+            { _id: item.productId, 'sizes.size': item.size },
+            { $inc: { 'sizes.$.stock': -item.quantity } }
+          );
+          const prod = await Product.findById(item.productId);
+          if (prod && prod.sizes) {
+            prod.stockQuantity = prod.sizes.reduce((s, sz) => s + (sz.stock || 0), 0);
+            if (prod.stockQuantity <= 0) prod.isOutOfStock = true;
+            await prod.save();
+          }
+        } catch (stockErr) {
+          console.error(`Stock update failed for product ${item.productId}:`, stockErr.message);
+        }
       }
     }
 
     res.status(201).json(order);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error('Order creation error:', err);
+    res.status(500).json({ message: err.message || 'Failed to place order' });
   }
 });
 
