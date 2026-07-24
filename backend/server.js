@@ -4,11 +4,20 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 
 dotenv.config();
-connectDB();
 
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
+
+// Ensure DB connection for every request in serverless environment
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    res.status(500).json({ message: 'Database connection failed: ' + err.message });
+  }
+});
 
 // ── Routes ──────────────────────────────────────────
 app.use('/api/auth',      require('./routes/authRoutes'));
