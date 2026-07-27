@@ -2,9 +2,11 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider, useCart } from './context/CartContext';
+import { WishlistProvider } from './context/WishlistContext';
 
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
+import { CartDrawer } from './components/CartDrawer';
 
 import { HomePage } from './pages/HomePage';
 import { ProductListPage } from './pages/ProductListPage';
@@ -41,6 +43,7 @@ const ShopLayout = ({ children }) => (
     </div>
     <Footer />
     <ToastNotification />
+    <CartDrawer />
   </div>
 );
 
@@ -76,7 +79,9 @@ export default function App() {
     <Router>
       <AuthProvider>
         <CartProvider>
-          <AppContent />
+          <WishlistProvider>
+            <AppContent />
+          </WishlistProvider>
         </CartProvider>
       </AuthProvider>
     </Router>

@@ -5,8 +5,13 @@ const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
+  const [savedForLater, setSavedForLater] = useState([]);
+  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
   const { user } = useAuth();
   const [notification, setNotification] = useState(null);
+
+  const openCartDrawer = () => setIsCartDrawerOpen(true);
+  const closeCartDrawer = () => setIsCartDrawerOpen(false);
 
   // Show temporary toast message
   const showToast = (message) => {
@@ -25,7 +30,6 @@ export const CartProvider = ({ children }) => {
           });
           if (res.ok) {
             const data = await res.json();
-            // Transform backend cart payload format
             const formatted = data.map((item) => ({
               productId: item.productId._id || item.productId,
               product: item.productId,
@@ -40,7 +44,7 @@ export const CartProvider = ({ children }) => {
         }
       }
 
-      // Fallback to localStorage if guest or backend unavailable
+      // Fallback to localStorage if guest
       const savedCart = localStorage.getItem('cloth_shop_guest_cart');
       if (savedCart) {
         try {
@@ -90,6 +94,7 @@ export const CartProvider = ({ children }) => {
           }));
           setCartItems(formatted);
           showToast(`Added ${product.name} (${size}) to Cart!`);
+          setIsCartDrawerOpen(true);
           return true;
         }
       } catch (err) {
@@ -113,7 +118,23 @@ export const CartProvider = ({ children }) => {
     });
 
     showToast(`Added ${product.name} (${size}) to Cart!`);
+    setIsCartDrawerOpen(true);
     return true;
+  };
+
+  const saveForLaterItem = (itemToSave) => {
+    removeFromCart(itemToSave.productId, itemToSave.size);
+    setSavedForLater((prev) => [...prev, itemToSave]);
+    showToast('Saved item for later');
+  };
+
+  const moveToCartFromSaved = (itemToMove) => {
+    setSavedForLater((prev) =>
+      prev.filter(
+        (i) => !(i.productId === itemToMove.productId && i.size === itemToMove.size)
+      )
+    );
+    addToCart(itemToMove.product, itemToMove.size, itemToMove.quantity || 1);
   };
 
   const updateQuantity = async (productId, size, newQty) => {
@@ -214,13 +235,19 @@ export const CartProvider = ({ children }) => {
     <CartContext.Provider
       value={{
         cartItems,
+        savedForLater,
         addToCart,
         updateQuantity,
         removeFromCart,
+        saveForLaterItem,
+        moveToCartFromSaved,
         clearCart,
         totalItemCount,
         cartSubtotal,
         notification,
+        isCartDrawerOpen,
+        openCartDrawer,
+        closeCartDrawer,
       }}
     >
       {children}
@@ -229,3 +256,4 @@ export const CartProvider = ({ children }) => {
 };
 
 export const useCart = () => useContext(CartContext);
+

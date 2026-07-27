@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ProductCard } from '../components/ProductCard';
+import { ProductSkeleton } from '../components/ProductSkeleton';
+import { CompareBar } from '../components/CompareBar';
+import { CompareModal } from '../components/CompareModal';
 import { Filter, SlidersHorizontal, X, Search, RotateCcw } from 'lucide-react';
 
 export const ProductListPage = () => {
@@ -10,6 +13,22 @@ export const ProductListPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+
+  // Compare state
+  const [compareList, setCompareList] = useState([]);
+  const [compareModalOpen, setCompareModalOpen] = useState(false);
+
+  const toggleCompareProduct = (product) => {
+    setCompareList((prev) => {
+      const exists = prev.some((p) => p._id === product._id);
+      if (exists) {
+        return prev.filter((p) => p._id !== product._id);
+      } else {
+        if (prev.length >= 3) return prev;
+        return [...prev, product];
+      }
+    });
+  };
 
   // Filter States
   const categoryParam = searchParams.get('category') || '';
@@ -150,7 +169,7 @@ export const ProductListPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
         
         {/* Desktop Sidebar Filters */}
-        <aside className="hidden lg:block bg-white rounded-3xl p-6 border border-slate-100 shadow-sm space-y-6 sticky top-28">
+        <aside className="hidden lg:block bg-white rounded-3xl p-6 border border-slate-100 shadow-sm space-y-6 sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto pr-3">
           <div className="flex items-center justify-between border-b border-slate-100 pb-4">
             <div className="flex items-center gap-2 font-extrabold text-slate-900 text-sm">
               <Filter className="w-4 h-4 text-indigo-600" />
@@ -184,21 +203,30 @@ export const ProductListPage = () => {
             </div>
           </div>
 
-          {/* SubCategories Filter */}
+          {/* SubCategories Filter (Type) */}
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Type</h3>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Apparel Type</h3>
+              {selectedSubCategory && (
+                <button onClick={() => setSelectedSubCategory('')} className="text-[10px] text-indigo-600 font-bold hover:underline">
+                  Clear Type
+                </button>
+              )}
+            </div>
             <div className="flex flex-wrap gap-1.5">
               {subCategories.map((sub) => (
                 <button
                   key={sub}
                   onClick={() => setSelectedSubCategory(selectedSubCategory === sub ? '' : sub)}
-                  className={`px-3 py-1 text-xs font-semibold rounded-lg capitalize border transition-all ${
+                  className={`px-3 py-1.5 text-xs font-bold rounded-xl capitalize border transition-all ${
                     selectedSubCategory === sub
-                      ? 'border-indigo-600 bg-indigo-50 text-indigo-700'
-                      : 'border-slate-200 text-slate-600 hover:border-slate-300'
+                      ? 'border-indigo-600 bg-indigo-600 text-white shadow-sm'
+                      : sub === 'pants'
+                      ? 'border-indigo-300 bg-indigo-50/50 text-indigo-900 hover:border-indigo-500'
+                      : 'border-slate-200 text-slate-700 hover:border-slate-300 bg-white'
                   }`}
                 >
-                  {sub}
+                  {sub === 'pants' ? '👖 Pants & Jeans' : sub}
                 </button>
               ))}
             </div>
@@ -245,11 +273,7 @@ export const ProductListPage = () => {
         {/* Product Grid */}
         <main className="lg:col-span-3">
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {[1, 2, 3, 4, 5, 6].map((n) => (
-                <div key={n} className="h-96 bg-slate-200 animate-pulse rounded-2xl" />
-              ))}
-            </div>
+            <ProductSkeleton count={6} />
           ) : products.length === 0 ? (
             <div className="bg-white rounded-3xl p-12 text-center border border-slate-100 space-y-4">
               <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-slate-400">
@@ -270,7 +294,12 @@ export const ProductListPage = () => {
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {products.map((product) => (
-                  <ProductCard key={product._id} product={product} />
+                  <ProductCard
+                    key={product._id}
+                    product={product}
+                    onToggleCompare={toggleCompareProduct}
+                    isCompared={compareList.some((p) => p._id === product._id)}
+                  />
                 ))}
               </div>
 
@@ -305,6 +334,20 @@ export const ProductListPage = () => {
           )}
         </main>
       </div>
+
+      {/* Compare Floating Bar & Side-by-Side Modal */}
+      <CompareBar
+        compareList={compareList}
+        onClear={() => setCompareList([])}
+        onOpenModal={() => setCompareModalOpen(true)}
+        onRemoveItem={(id) => setCompareList((prev) => prev.filter((item) => item._id !== id))}
+      />
+
+      <CompareModal
+        compareList={compareList}
+        isOpen={compareModalOpen}
+        onClose={() => setCompareModalOpen(false)}
+      />
 
       {/* Mobile Filter Drawer */}
       {mobileFilterOpen && (
