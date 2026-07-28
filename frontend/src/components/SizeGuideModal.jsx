@@ -1,140 +1,269 @@
 import React, { useState } from 'react';
-import { X, Ruler } from 'lucide-react';
+import { X, Ruler, Check } from 'lucide-react';
 
-export const SizeGuideModal = ({ isOpen, onClose }) => {
-  const [tab, setTab] = useState('men');
+export const SizeGuideModal = ({ isOpen, onClose, category = 'men' }) => {
+  const [activeTab, setActiveTab] = useState(
+    category === 'women' ? 'women' : category === 'boys' ? 'boys' : category === 'girls' ? 'girls' : 'men'
+  );
 
   if (!isOpen) return null;
 
-  const sizeTables = {
-    men: [
-      { size: 'XS', chest: '34 - 36', waist: '28 - 30', neck: '14 - 14.5' },
-      { size: 'S', chest: '36 - 38', waist: '30 - 32', neck: '15 - 15.5' },
-      { size: 'M', chest: '38 - 40', waist: '32 - 34', neck: '16 - 16.5' },
-      { size: 'L', chest: '41 - 43', waist: '35 - 37', neck: '17 - 17.5' },
-      { size: 'XL', chest: '44 - 46', waist: '38 - 40', neck: '18 - 18.5' },
-      { size: 'XXL', chest: '47 - 49', waist: '41 - 43', neck: '19 - 19.5' },
-    ],
-    women: [
-      { size: 'XS', bust: '31 - 32', waist: '24 - 25', hip: '34 - 35' },
-      { size: 'S', bust: '33 - 34', waist: '26 - 27', hip: '36 - 37' },
-      { size: 'M', bust: '35 - 36', waist: '28 - 29', hip: '38 - 39' },
-      { size: 'L', bust: '37 - 39', waist: '30 - 32', hip: '40 - 42' },
-      { size: 'XL', bust: '40 - 42', waist: '33 - 35', hip: '43 - 45' },
-      { size: 'XXL', bust: '43 - 45', waist: '36 - 38', hip: '46 - 48' },
-    ],
-    kids: [
-      { size: '2-3Y', height: '35 - 38', chest: '20 - 21', waist: '19 - 20' },
-      { size: '4-5Y', height: '39 - 43', chest: '22 - 23', waist: '21 - 21.5' },
-      { size: '6-7Y', height: '44 - 48', chest: '24 - 25', waist: '22 - 22.5' },
-      { size: '8-9Y', height: '49 - 53', chest: '26 - 27', waist: '23 - 24' },
-    ],
-  };
-
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onClose} />
-
-      <div className="relative bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-6 sm:p-8 space-y-6 z-10">
-        <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
-              <Ruler className="w-5 h-5" />
-            </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/70 backdrop-blur-sm animate-fade-in font-['Plus_Jakarta_Sans',sans-serif]">
+      <div className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto border border-stone-200">
+        
+        {/* Header */}
+        <div className="flex items-center justify-between border-b pb-4">
+          <div className="flex items-center gap-2">
+            <Ruler className="w-6 h-6 text-indigo-600" />
             <div>
-              <h3 className="text-xl font-black text-slate-900">Sizing Guide & Fit Chart</h3>
-              <p className="text-xs text-slate-500">All measurements provided in inches (in)</p>
+              <h2 className="text-xl font-black text-stone-900">Official Clothing Size Chart</h2>
+              <p className="text-xs text-stone-500">Find your ideal fit for Adult &amp; Kids collections.</p>
             </div>
           </div>
+
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-slate-900 hover:bg-slate-100"
+            className="p-2 rounded-full bg-stone-100 text-stone-600 hover:bg-stone-900 hover:text-white transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Tab Selection */}
-        <div className="flex border-b border-slate-100 text-xs font-bold">
-          {['men', 'women', 'kids'].map((t) => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`px-6 py-2.5 capitalize border-b-2 transition-all ${
-                tab === t
-                  ? 'border-indigo-600 text-indigo-600 font-extrabold'
-                  : 'border-transparent text-slate-500 hover:text-slate-900'
-              }`}
-            >
-              {t}'s Sizing
-            </button>
-          ))}
+        {/* Category Tabs */}
+        <div className="flex bg-stone-100 p-1 rounded-2xl text-xs font-bold gap-1">
+          <button
+            onClick={() => setActiveTab('men')}
+            className={`flex-1 py-2.5 rounded-xl transition-all ${
+              activeTab === 'men' ? 'bg-indigo-600 text-white shadow-sm font-black' : 'text-stone-700 hover:text-stone-900'
+            }`}
+          >
+            Adult Men (M, L, XL, XXL)
+          </button>
+
+          <button
+            onClick={() => setActiveTab('women')}
+            className={`flex-1 py-2.5 rounded-xl transition-all ${
+              activeTab === 'women' ? 'bg-rose-600 text-white shadow-sm font-black' : 'text-stone-700 hover:text-stone-900'
+            }`}
+          >
+            Adult Women (M, L, XL, XXL)
+          </button>
+
+          <button
+            onClick={() => setActiveTab('boys')}
+            className={`flex-1 py-2.5 rounded-xl transition-all ${
+              activeTab === 'boys' ? 'bg-amber-600 text-white shadow-sm font-black' : 'text-stone-700 hover:text-stone-900'
+            }`}
+          >
+            Child Men (Boys)
+          </button>
+
+          <button
+            onClick={() => setActiveTab('girls')}
+            className={`flex-1 py-2.5 rounded-xl transition-all ${
+              activeTab === 'girls' ? 'bg-purple-600 text-white shadow-sm font-black' : 'text-stone-700 hover:text-stone-900'
+            }`}
+          >
+            Child Women (Girls)
+          </button>
         </div>
 
-        {/* Measurement Table */}
+        {/* Size Chart Tables */}
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead>
-              <tr className="bg-slate-100 text-slate-700 font-extrabold">
-                <th className="p-3 rounded-l-xl">Size</th>
-                {tab === 'men' && (
-                  <>
-                    <th className="p-3">Chest (in)</th>
-                    <th className="p-3">Waist (in)</th>
-                    <th className="p-3 rounded-r-xl">Neck (in)</th>
-                  </>
-                )}
-                {tab === 'women' && (
-                  <>
-                    <th className="p-3">Bust (in)</th>
-                    <th className="p-3">Waist (in)</th>
-                    <th className="p-3 rounded-r-xl">Hip (in)</th>
-                  </>
-                )}
-                {tab === 'kids' && (
-                  <>
-                    <th className="p-3">Height (in)</th>
-                    <th className="p-3">Chest (in)</th>
-                    <th className="p-3 rounded-r-xl">Waist (in)</th>
-                  </>
-                )}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 font-semibold text-slate-800">
-              {sizeTables[tab].map((row, idx) => (
-                <tr key={idx} className="hover:bg-slate-50">
-                  <td className="p-3 font-extrabold text-indigo-600">{row.size}</td>
-                  {tab === 'men' && (
-                    <>
-                      <td className="p-3">{row.chest}</td>
-                      <td className="p-3">{row.waist}</td>
-                      <td className="p-3">{row.neck}</td>
-                    </>
-                  )}
-                  {tab === 'women' && (
-                    <>
-                      <td className="p-3">{row.bust}</td>
-                      <td className="p-3">{row.waist}</td>
-                      <td className="p-3">{row.hip}</td>
-                    </>
-                  )}
-                  {tab === 'kids' && (
-                    <>
-                      <td className="p-3">{row.height}</td>
-                      <td className="p-3">{row.chest}</td>
-                      <td className="p-3">{row.waist}</td>
-                    </>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {activeTab === 'men' && (
+            <div className="space-y-3">
+              <h3 className="font-extrabold text-xs uppercase tracking-wider text-indigo-700">
+                Adult Men Size Chart (Inches / cm)
+              </h3>
+              <table className="w-full text-left text-xs border-collapse border border-stone-200">
+                <thead>
+                  <tr className="bg-stone-900 text-white">
+                    <th className="p-3">Size Tag</th>
+                    <th className="p-3">Chest (inches)</th>
+                    <th className="p-3">Waist (inches)</th>
+                    <th className="p-3">Neck (inches)</th>
+                    <th className="p-3">Body Length (cm)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-stone-200 font-medium">
+                  <tr className="bg-stone-50/50">
+                    <td className="p-3 font-black text-indigo-700">M (Medium)</td>
+                    <td className="p-3">38" - 40"</td>
+                    <td className="p-3">32" - 34"</td>
+                    <td className="p-3">15.5"</td>
+                    <td className="p-3">72 cm</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-black text-indigo-700">L (Large)</td>
+                    <td className="p-3">41" - 43"</td>
+                    <td className="p-3">35" - 37"</td>
+                    <td className="p-3">16.5"</td>
+                    <td className="p-3">74 cm</td>
+                  </tr>
+                  <tr className="bg-stone-50/50">
+                    <td className="p-3 font-black text-indigo-700">XL (Extra Large)</td>
+                    <td className="p-3">44" - 46"</td>
+                    <td className="p-3">38" - 40"</td>
+                    <td className="p-3">17.5"</td>
+                    <td className="p-3">76 cm</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-black text-indigo-700">XXL (Double XL)</td>
+                    <td className="p-3">47" - 49"</td>
+                    <td className="p-3">41" - 43"</td>
+                    <td className="p-3">18.5"</td>
+                    <td className="p-3">78 cm</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {activeTab === 'women' && (
+            <div className="space-y-3">
+              <h3 className="font-extrabold text-xs uppercase tracking-wider text-rose-700">
+                Adult Women Size Chart (Inches / cm)
+              </h3>
+              <table className="w-full text-left text-xs border-collapse border border-stone-200">
+                <thead>
+                  <tr className="bg-stone-900 text-white">
+                    <th className="p-3">Size Tag</th>
+                    <th className="p-3">Bust (inches)</th>
+                    <th className="p-3">Waist (inches)</th>
+                    <th className="p-3">Hips (inches)</th>
+                    <th className="p-3">Dress Length (cm)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-stone-200 font-medium">
+                  <tr className="bg-stone-50/50">
+                    <td className="p-3 font-black text-rose-700">M (Medium / UK 10-12)</td>
+                    <td className="p-3">34" - 36"</td>
+                    <td className="p-3">28" - 30"</td>
+                    <td className="p-3">37" - 39"</td>
+                    <td className="p-3">102 cm</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-black text-rose-700">L (Large / UK 14)</td>
+                    <td className="p-3">37" - 39"</td>
+                    <td className="p-3">31" - 33"</td>
+                    <td className="p-3">40" - 42"</td>
+                    <td className="p-3">104 cm</td>
+                  </tr>
+                  <tr className="bg-stone-50/50">
+                    <td className="p-3 font-black text-rose-700">XL (Extra Large / UK 16)</td>
+                    <td className="p-3">40" - 42"</td>
+                    <td className="p-3">34" - 36"</td>
+                    <td className="p-3">43" - 45"</td>
+                    <td className="p-3">106 cm</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-black text-rose-700">XXL (Double XL / UK 18)</td>
+                    <td className="p-3">43" - 45"</td>
+                    <td className="p-3">37" - 39"</td>
+                    <td className="p-3">46" - 48"</td>
+                    <td className="p-3">108 cm</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {activeTab === 'boys' && (
+            <div className="space-y-3">
+              <h3 className="font-extrabold text-xs uppercase tracking-wider text-amber-700">
+                Child Men (Boys) Size Chart
+              </h3>
+              <table className="w-full text-left text-xs border-collapse border border-stone-200">
+                <thead>
+                  <tr className="bg-stone-900 text-white">
+                    <th className="p-3">Age Group</th>
+                    <th className="p-3">Height (cm)</th>
+                    <th className="p-3">Chest (inches)</th>
+                    <th className="p-3">Waist (inches)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-stone-200 font-medium">
+                  <tr className="bg-stone-50/50">
+                    <td className="p-3 font-black text-amber-700">2 - 3 Years</td>
+                    <td className="p-3">92 - 98 cm</td>
+                    <td className="p-3">21" - 22"</td>
+                    <td className="p-3">20" - 21"</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-black text-amber-700">4 - 5 Years</td>
+                    <td className="p-3">104 - 110 cm</td>
+                    <td className="p-3">23" - 24"</td>
+                    <td className="p-3">21.5" - 22.5"</td>
+                  </tr>
+                  <tr className="bg-stone-50/50">
+                    <td className="p-3 font-black text-amber-700">6 - 7 Years</td>
+                    <td className="p-3">116 - 122 cm</td>
+                    <td className="p-3">25" - 26"</td>
+                    <td className="p-3">23" - 24"</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-black text-amber-700">8 - 9 Years</td>
+                    <td className="p-3">128 - 134 cm</td>
+                    <td className="p-3">27" - 28"</td>
+                    <td className="p-3">24.5" - 25.5"</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {activeTab === 'girls' && (
+            <div className="space-y-3">
+              <h3 className="font-extrabold text-xs uppercase tracking-wider text-purple-700">
+                Child Women (Girls) Size Chart
+              </h3>
+              <table className="w-full text-left text-xs border-collapse border border-stone-200">
+                <thead>
+                  <tr className="bg-stone-900 text-white">
+                    <th className="p-3">Age Group</th>
+                    <th className="p-3">Height (cm)</th>
+                    <th className="p-3">Chest (inches)</th>
+                    <th className="p-3">Waist (inches)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-stone-200 font-medium">
+                  <tr className="bg-stone-50/50">
+                    <td className="p-3 font-black text-purple-700">2 - 3 Years</td>
+                    <td className="p-3">92 - 98 cm</td>
+                    <td className="p-3">20.5" - 21.5"</td>
+                    <td className="p-3">20" - 21"</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-black text-purple-700">4 - 5 Years</td>
+                    <td className="p-3">104 - 110 cm</td>
+                    <td className="p-3">22.5" - 23.5"</td>
+                    <td className="p-3">21.5" - 22.5"</td>
+                  </tr>
+                  <tr className="bg-stone-50/50">
+                    <td className="p-3 font-black text-purple-700">6 - 7 Years</td>
+                    <td className="p-3">116 - 122 cm</td>
+                    <td className="p-3">24.5" - 25.5"</td>
+                    <td className="p-3">23" - 24"</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-black text-purple-700">8 - 9 Years</td>
+                    <td className="p-3">128 - 134 cm</td>
+                    <td className="p-3">26.5" - 27.5"</td>
+                    <td className="p-3">24.5" - 25.5"</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
 
-        <div className="bg-slate-50 p-4 rounded-2xl text-[11px] text-slate-500 leading-relaxed">
-          💡 <strong>Fit Tip:</strong> If your body measurements fall between two sizes, order the smaller size for a tighter, slim fit or the larger size for a relaxed, comfortable fit.
+        {/* Tip Box */}
+        <div className="p-4 bg-indigo-50 border border-indigo-200 rounded-2xl text-xs text-indigo-900 font-semibold flex items-center gap-2">
+          <Check className="w-4 h-4 text-indigo-600 flex-shrink-0" />
+          <span>If you fall between two sizes, we recommend selecting the larger size for a relaxed comfortable fit. Free exchanges within 14 days!</span>
         </div>
+
       </div>
     </div>
   );

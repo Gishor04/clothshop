@@ -1,447 +1,406 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
+import { useCompare } from '../context/CompareContext';
 import { MegaMenu } from './MegaMenu';
+import { MOCK_PRODUCTS } from '../data/mockProducts';
 import {
   ShoppingBag,
-  User,
+  Heart,
   Search,
+  User,
   Menu,
   X,
-  ShieldAlert,
-  Package,
-  LogOut,
-  ChevronDown,
+  Phone,
   Sparkles,
-  Heart,
-  Flame,
-  Clock
+  ArrowRightLeft,
+  ChevronDown,
+  ShieldCheck,
+  Tag
 } from 'lucide-react';
 
 export const Navbar = () => {
   const { user, logout } = useAuth();
   const { totalItemCount, openCartDrawer } = useCart();
   const { wishlistCount } = useWishlist();
+  const { compareItems } = useCompare();
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [recentSearches, setRecentSearches] = useState([]);
-  const [activeMegaCategory, setActiveMegaCategory] = useState(null);
-
+  const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [megaMenuOpen, setMegaMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchFiltered, setSearchFiltered] = useState([]);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
 
-  const searchRef = useRef(null);
-
-  // Load recent searches on mount
   useEffect(() => {
-    const saved = localStorage.getItem('cloth_shop_recent_searches');
-    if (saved) {
-      try {
-        setRecentSearches(JSON.parse(saved));
-      } catch (e) {}
-    }
-  }, []);
-
-  // Live autocomplete search effect
-  useEffect(() => {
-    if (searchQuery.trim().length < 2) {
-      setSearchResults([]);
-      return;
-    }
-
-    const timer = setTimeout(async () => {
-      setIsSearching(true);
-      try {
-        const res = await fetch(`/api/products?search=${encodeURIComponent(searchQuery.trim())}&limit=5`);
-        if (res.ok) {
-          const data = await res.json();
-          const list = Array.isArray(data) ? data : (data.products || []);
-          setSearchResults(list);
-          setShowDropdown(true);
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsSearching(false);
-      }
-    }, 250);
-
-    return () => clearTimeout(timer);
-  }, [searchQuery]);
-
-  // Close search dropdown on click outside
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (searchRef.current && !searchRef.current.contains(e.target)) {
-        setShowDropdown(false);
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (searchQuery.trim().length > 1) {
+      const q = searchQuery.toLowerCase();
+      const filtered = MOCK_PRODUCTS.filter(
+        (p) =>
+          p.name.toLowerCase().includes(q) ||
+          p.category.toLowerCase().includes(q) ||
+          (p.fabric || '').toLowerCase().includes(q) ||
+          p.description.toLowerCase().includes(q)
+      );
+      setSearchFiltered(filtered);
+    } else {
+      setSearchFiltered([]);
+    }
+  }, [searchQuery]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      const query = searchQuery.trim();
-      // Add to recent searches
-      const updated = [query, ...recentSearches.filter((s) => s !== query)].slice(0, 5);
-      setRecentSearches(updated);
-      localStorage.setItem('cloth_shop_recent_searches', JSON.stringify(updated));
-
-      navigate(`/products?search=${encodeURIComponent(query)}`);
-      setShowDropdown(false);
+      navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
+      setSearchOpen(false);
       setSearchQuery('');
-      setMobileMenuOpen(false);
     }
   };
 
-  const navCategories = [
-    { name: 'Men', path: '/products?category=men', megaKey: 'men' },
-    { name: 'Women', path: '/products?category=women', megaKey: 'women' },
-    { name: "Boys & Girls (Kids)", path: '/products?category=boys', megaKey: 'kids' },
-    { name: 'All Collection', path: '/products', megaKey: null },
-  ];
-
-  const subCategoryQuickLinks = [
-    { label: '👖 Pants & Jeans', subCategory: 'pants' },
-    { label: '👔 Shirts', subCategory: 'shirts' },
-    { label: '👗 Dresses', subCategory: 'dresses' },
-    { label: '🧥 Jackets & Blazers', subCategory: 'jackets' },
-    { label: '👕 T-Shirts & Tops', subCategory: 't-shirts' },
-    { label: '🧥 Hoodies', subCategory: 'hoodies' },
-  ];
-
-  const trendingSearches = ['Denim Jeans', 'Cotton Shirt', 'Silk Dress', 'Leather Jacket'];
-
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs transition-all">
-      {/* Top Banner Announcement */}
-      <div className="bg-slate-900 text-white text-xs py-1.5 px-4 text-center font-medium tracking-wide flex items-center justify-center gap-2">
-        <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-        <span>Summer Fashion Sale: Extra 20% OFF with code <strong className="text-amber-300">STYLE20</strong> | Free Shipping over $75</span>
+    <header className="sticky top-0 z-40 w-full transition-all duration-300 font-['Plus_Jakarta_Sans',sans-serif]">
+      
+      {/* Announcement Bar */}
+      <div className="bg-stone-950 text-stone-200 text-[11px] font-semibold py-2 px-4 flex items-center justify-between border-b border-stone-800">
+        <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <span className="hidden sm:inline-flex items-center gap-1 text-amber-400 font-bold">
+              <Sparkles className="w-3 h-3" /> Kaithady Avurudu Sale: Save 25% with Code AVURUDU25
+            </span>
+            <span className="inline-flex items-center gap-1 text-stone-300">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Free Island-Wide Shipping over Rs. 10,000
+            </span>
+          </div>
+
+          <div className="flex items-center gap-4 text-[10px] text-stone-400">
+            <a
+              href="https://wa.me/94770000000?text=Hi%20Kaithady%20Clothing%20Boutique%2C%20I%27d%20like%20to%20order."
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-emerald-400 flex items-center gap-1 font-bold transition-colors"
+            >
+              <Phone className="w-3 h-3 text-emerald-400" /> WhatsApp Order: +94 77 000 0000
+            </a>
+            <Link to="/contact" className="hover:text-white transition-colors hidden md:inline">
+              Store Locator
+            </Link>
+          </div>
+        </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20 gap-4">
+      {/* Main Navbar */}
+      <nav
+        className={`w-full transition-all duration-300 ${
+          isScrolled
+            ? 'bg-white/95 backdrop-blur-xl shadow-md border-b border-stone-200 py-3'
+            : 'bg-white border-b border-stone-100 py-4'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           
-          {/* Mobile Menu Toggle */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-
           {/* Brand Logo */}
-          <Link to="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-md shadow-indigo-200 group-hover:scale-105 transition-transform">
-              <ShoppingBag className="w-5 h-5" />
+          <div className="flex items-center gap-8">
+            <Link to="/" className="group flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-2xl bg-indigo-700 text-white font-black text-xl flex items-center justify-center shadow-md group-hover:bg-indigo-600 transition-all">
+                K
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xl font-black tracking-tight text-stone-900 leading-none group-hover:text-indigo-700 transition-colors">
+                  KAITHADY
+                </span>
+                <span className="text-[9px] uppercase tracking-widest font-black text-indigo-700">
+                  Clothing Boutique
+                </span>
+              </div>
+            </Link>
+
+            {/* Desktop Navigation Links */}
+            <div className="hidden lg:flex items-center gap-6 text-xs font-black uppercase tracking-wider text-stone-700">
+              <Link to="/products" className="hover:text-indigo-700 transition-colors">
+                Shop All
+              </Link>
+              
+              <button
+                onMouseEnter={() => setMegaMenuOpen(true)}
+                onClick={() => setMegaMenuOpen(!megaMenuOpen)}
+                className="flex items-center gap-1 hover:text-indigo-700 transition-colors py-2"
+              >
+                <span>Departments</span>
+                <ChevronDown className="w-3.5 h-3.5" />
+              </button>
+
+              <Link to="/products?category=men" className="hover:text-indigo-700 transition-colors text-indigo-950 font-black">
+                Adult Men (M-XXL)
+              </Link>
+              <Link to="/products?category=women" className="hover:text-rose-700 transition-colors text-rose-950 font-black">
+                Adult Women (M-XXL)
+              </Link>
+              <Link to="/products?category=boys" className="hover:text-amber-700 transition-colors text-amber-950">
+                Child Men (Boys)
+              </Link>
+              <Link to="/products?category=girls" className="hover:text-purple-700 transition-colors text-purple-950">
+                Child Women (Girls)
+              </Link>
+
+              <Link
+                to="/products?onSale=true"
+                className="text-amber-600 hover:text-amber-800 flex items-center gap-1 transition-colors font-black"
+              >
+                <Tag className="w-3.5 h-3.5" /> Special Offers
+              </Link>
             </div>
-            <span className="text-xl sm:text-2xl font-black tracking-tight bg-gradient-to-r from-slate-900 via-indigo-950 to-indigo-700 bg-clip-text text-transparent">
-              StyleVerse
-            </span>
-          </Link>
+          </div>
 
-          {/* Desktop Category Navigation with MegaMenu Triggers */}
-          <nav className="hidden lg:flex items-center gap-7 text-sm font-bold relative">
-            {navCategories.map((cat) => {
-              const isActive = location.pathname + location.search === cat.path;
-              return (
-                <div
-                  key={cat.name}
-                  onMouseEnter={() => cat.megaKey && setActiveMegaCategory(cat.megaKey)}
-                  className="py-6"
-                >
-                  <Link
-                    to={cat.path}
-                    className={`transition-colors py-1 relative ${
-                      isActive ? 'text-indigo-600' : 'text-slate-700 hover:text-indigo-600'
-                    }`}
-                  >
-                    {cat.name}
-                    {isActive && (
-                      <span className="absolute bottom-0 left-0 w-full h-0.5 bg-indigo-600 rounded-full" />
-                    )}
-                  </Link>
-                </div>
-              );
-            })}
-          </nav>
-
-          {/* Search Bar & User Actions */}
+          {/* Right Actions Bar */}
           <div className="flex items-center gap-3 sm:gap-4">
             
-            {/* Desktop Search Bar with Live Autocomplete & History */}
-            <div className="hidden md:block relative" ref={searchRef}>
-              <form onSubmit={handleSearchSubmit} className="relative">
-                <input
-                  type="text"
-                  placeholder="Search pants, shirts, dresses..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onFocus={() => setShowDropdown(true)}
-                  className="w-48 lg:w-64 pl-9 pr-4 py-2 text-xs rounded-full bg-slate-100 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all font-medium"
-                />
-                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5 pointer-events-none" />
-              </form>
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="p-2.5 rounded-full hover:bg-stone-100 text-stone-700 transition-colors"
+              title="Search Clothing"
+            >
+              <Search className="w-5 h-5" />
+            </button>
 
-              {/* Search Suggestions & Trending Dropdown */}
-              {showDropdown && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-50 p-3 space-y-3 w-80">
-                  {searchQuery.trim().length >= 2 ? (
-                    <div>
-                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
-                        {isSearching ? 'Searching...' : searchResults.length > 0 ? 'Matching Products' : 'No Results Found'}
-                      </div>
-
-                      {searchResults.map((item) => (
-                        <Link
-                          key={item._id}
-                          to={`/product/${item._id}`}
-                          onClick={() => {
-                            setShowDropdown(false);
-                            setSearchQuery('');
-                          }}
-                          className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 transition-colors"
-                        >
-                          <img
-                            src={item.images?.[0] || 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=200'}
-                            alt=""
-                            className="w-10 h-12 object-cover rounded-lg bg-slate-100 flex-shrink-0"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xs font-bold text-slate-900 truncate">{item.name}</p>
-                            <p className="text-[10px] text-slate-500 capitalize">{item.brand} &bull; {item.category}</p>
-                          </div>
-                          <span className="text-xs font-extrabold text-indigo-600">${item.price?.toFixed(2)}</span>
-                        </Link>
-                      ))}
-
-                      {searchQuery.trim() && (
-                        <button
-                          onClick={handleSearchSubmit}
-                          className="w-full text-center text-xs font-bold text-indigo-600 hover:bg-indigo-50 py-2 rounded-xl transition-colors mt-1"
-                        >
-                          See all results for "{searchQuery}" &rarr;
-                        </button>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="space-y-3 text-xs">
-                      {/* Recent searches */}
-                      {recentSearches.length > 0 && (
-                        <div>
-                          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                            <Clock className="w-3 h-3 text-slate-400" /> Recent Searches
-                          </div>
-                          <div className="flex flex-wrap gap-1">
-                            {recentSearches.map((term) => (
-                              <button
-                                key={term}
-                                onClick={() => {
-                                  setSearchQuery(term);
-                                  navigate(`/products?search=${encodeURIComponent(term)}`);
-                                  setShowDropdown(false);
-                                }}
-                                className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-[11px] font-semibold"
-                              >
-                                {term}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Trending searches */}
-                      <div>
-                        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                          <Flame className="w-3 h-3 text-amber-500" /> Trending Searches
-                        </div>
-                        <div className="flex flex-wrap gap-1.5">
-                          {trendingSearches.map((term) => (
-                            <button
-                              key={term}
-                              onClick={() => {
-                                setSearchQuery(term);
-                                navigate(`/products?search=${encodeURIComponent(term)}`);
-                                setShowDropdown(false);
-                              }}
-                              className="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg text-[11px] font-bold"
-                            >
-                              🔥 {term}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Wishlist Icon */}
             <Link
-              to="/products"
-              className="p-2.5 rounded-full hover:bg-slate-100 text-slate-700 relative transition-colors"
-              title="Wishlist"
+              to="/wishlist"
+              className="p-2.5 rounded-full hover:bg-stone-100 text-stone-700 transition-colors relative"
+              title="Saved Wishlist"
             >
               <Heart className="w-5 h-5" />
               {wishlistCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-sm">
+                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-rose-600 text-white text-[10px] font-black flex items-center justify-center shadow-xs">
                   {wishlistCount}
                 </span>
               )}
             </Link>
 
-            {/* Shopping Cart Icon (Triggers Cart Drawer) */}
+            {compareItems.length > 0 && (
+              <button
+                onClick={() => navigate('/products')}
+                className="p-2.5 rounded-full hover:bg-stone-100 text-stone-700 transition-colors relative hidden sm:block"
+                title="Compare Apparel"
+              >
+                <ArrowRightLeft className="w-5 h-5 text-indigo-700" />
+                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-indigo-700 text-white text-[10px] font-black flex items-center justify-center shadow-xs">
+                  {compareItems.length}
+                </span>
+              </button>
+            )}
+
             <button
               onClick={openCartDrawer}
-              className="p-2.5 rounded-full hover:bg-slate-100 text-slate-700 relative transition-colors"
+              className="p-2.5 rounded-2xl bg-indigo-700 hover:bg-indigo-600 text-white transition-all shadow-md flex items-center gap-2 active:scale-95"
               title="Shopping Cart"
             >
               <ShoppingBag className="w-5 h-5" />
-              {totalItemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-gradient-to-r from-rose-500 to-indigo-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-sm animate-pulse">
-                  {totalItemCount}
-                </span>
-              )}
+              <span className="text-xs font-black hidden sm:inline">{totalItemCount}</span>
             </button>
 
-            {/* User Account / Auth Dropdown */}
-            {user ? (
-              <div className="relative">
+            {/* User Account Menu */}
+            <div className="relative">
+              {user ? (
                 <button
-                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold transition-colors"
+                  onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+                  className="flex items-center gap-2 p-1.5 rounded-2xl hover:bg-stone-100 text-stone-800 font-bold text-xs"
                 >
-                  <div className="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-[10px]">
-                    {user.name.charAt(0).toUpperCase()}
+                  <div className="w-8 h-8 rounded-full bg-stone-900 text-white font-black text-xs flex items-center justify-center">
+                    {user.name.charAt(0)}
                   </div>
-                  <span className="hidden sm:inline max-w-[100px] truncate">{user.name}</span>
-                  <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
+                  <span className="hidden md:inline line-clamp-1">{user.name}</span>
                 </button>
+              ) : (
+                <Link
+                  to="/auth"
+                  className="p-2.5 rounded-full hover:bg-stone-100 text-stone-700 transition-colors block"
+                  title="Sign In / Register"
+                >
+                  <User className="w-5 h-5" />
+                </Link>
+              )}
 
-                {userDropdownOpen && (
-                  <div
-                    className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-50 text-xs"
-                    onMouseLeave={() => setUserDropdownOpen(false)}
-                  >
-                    <div className="px-4 py-2 border-b border-slate-100">
-                      <p className="font-bold text-slate-900 truncate">{user.name}</p>
-                      <p className="text-slate-500 truncate">{user.email}</p>
-                      {user.role === 'admin' && (
-                        <span className="inline-block mt-1 px-2 py-0.5 bg-indigo-100 text-indigo-700 font-bold rounded text-[10px]">
-                          Admin Access
-                        </span>
-                      )}
-                    </div>
-
-                    <Link
-                      to="/orders"
-                      onClick={() => setUserDropdownOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition-colors"
-                    >
-                      <Package className="w-4 h-4 text-slate-400" />
-                      My Orders
-                    </Link>
-
-                    {user.role === 'admin' && (
-                      <Link
-                        to="/admin"
-                        onClick={() => setUserDropdownOpen(false)}
-                        className="flex items-center gap-2.5 px-4 py-2.5 text-indigo-600 font-semibold hover:bg-indigo-50 transition-colors"
-                      >
-                        <ShieldAlert className="w-4 h-4" />
-                        Admin Dashboard
-                      </Link>
-                    )}
-
-                    <button
-                      onClick={() => {
-                        setUserDropdownOpen(false);
-                        logout();
-                      }}
-                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-rose-600 hover:bg-rose-50 font-medium transition-colors border-t border-slate-100"
-                    >
-                      <LogOut className="w-4 h-4" />
-                      Logout
-                    </button>
+              {profileDropdownOpen && user && (
+                <div
+                  className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-stone-200 py-2 z-50 animate-fade-in text-xs font-semibold"
+                  onMouseLeave={() => setProfileDropdownOpen(false)}
+                >
+                  <div className="px-4 py-2 border-b border-stone-100">
+                    <p className="font-extrabold text-stone-900">{user.name}</p>
+                    <p className="text-[10px] text-stone-400 truncate">{user.email}</p>
                   </div>
-                )}
+
+                  <Link
+                    to="/orders"
+                    onClick={() => setProfileDropdownOpen(false)}
+                    className="block px-4 py-2 text-stone-700 hover:bg-stone-50 hover:text-indigo-700"
+                  >
+                    My Kaithady Orders
+                  </Link>
+
+                  {user.role === 'admin' && (
+                    <Link
+                      to="/admin"
+                      onClick={() => setProfileDropdownOpen(false)}
+                      className="block px-4 py-2 text-indigo-700 font-bold hover:bg-indigo-50"
+                    >
+                      Admin Dashboard
+                    </Link>
+                  )}
+
+                  <button
+                    onClick={() => {
+                      logout();
+                      setProfileDropdownOpen(false);
+                    }}
+                    className="w-full text-left px-4 py-2 text-rose-600 hover:bg-rose-50 font-bold"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Mobile Toggle */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-2.5 rounded-full hover:bg-stone-100 text-stone-700"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+
+        </div>
+
+        {/* Mega Menu Dropdown */}
+        <MegaMenu isOpen={megaMenuOpen} onClose={() => setMegaMenuOpen(false)} />
+      </nav>
+
+      {/* Mobile Drawer */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 bg-stone-950/70 backdrop-blur-sm animate-fade-in">
+          <div className="w-4/5 max-w-sm bg-white h-full shadow-2xl p-6 flex flex-col justify-between overflow-y-auto">
+            <div className="space-y-6">
+              <div className="flex items-center justify-between border-b pb-4">
+                <Link to="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-xl bg-indigo-700 text-white font-black flex items-center justify-center text-base">
+                    K
+                  </div>
+                  <span className="font-black text-lg text-stone-900">KAITHADY BOUTIQUE</span>
+                </Link>
+                <button onClick={() => setMobileMenuOpen(false)} className="p-2 text-stone-500">
+                  <X className="w-5 h-5" />
+                </button>
               </div>
-            ) : (
-              <Link
-                to="/auth"
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 hover:bg-indigo-600 text-white text-xs font-semibold transition-all shadow-sm"
+
+              <nav className="flex flex-col space-y-3 font-extrabold text-sm text-stone-800">
+                <Link to="/products" onClick={() => setMobileMenuOpen(false)} className="py-2 border-b">
+                  Shop All Apparel
+                </Link>
+                <Link to="/products?category=men" onClick={() => setMobileMenuOpen(false)} className="py-2 border-b text-indigo-700">
+                  Adult Men's Collection (M, L, XL, XXL)
+                </Link>
+                <Link to="/products?category=women" onClick={() => setMobileMenuOpen(false)} className="py-2 border-b text-rose-700">
+                  Adult Women's Collection (M, L, XL, XXL)
+                </Link>
+                <Link to="/products?category=boys" onClick={() => setMobileMenuOpen(false)} className="py-2 border-b text-amber-700">
+                  Child Men's Fashion (Boys)
+                </Link>
+                <Link to="/products?category=girls" onClick={() => setMobileMenuOpen(false)} className="py-2 border-b text-purple-700">
+                  Child Women's Wear (Girls)
+                </Link>
+                <Link to="/contact" onClick={() => setMobileMenuOpen(false)} className="py-2 border-b">
+                  Store Hours &amp; Location
+                </Link>
+              </nav>
+            </div>
+
+            <div className="space-y-3 pt-6 border-t">
+              <a
+                href="https://wa.me/94770000000?text=Hi%20Kaithady%20Clothing%20Boutique%2C%20I%27d%20like%20to%20order."
+                target="_blank"
+                rel="noreferrer"
+                className="w-full py-3 bg-emerald-600 text-white rounded-2xl text-xs font-bold flex items-center justify-center gap-2 shadow-md"
               >
-                <User className="w-4 h-4" />
-                <span>Sign In</span>
-              </Link>
-            )}
+                <Phone className="w-4 h-4" /> Order via WhatsApp
+              </a>
+            </div>
           </div>
         </div>
-
-        {/* SubCategory Quick Navigation Bar */}
-        <div className="border-t border-slate-100 py-2.5 overflow-x-auto no-scrollbar flex items-center gap-2 text-xs">
-          <span className="font-extrabold text-slate-400 uppercase tracking-wider text-[10px] shrink-0 mr-1">
-            Popular Types:
-          </span>
-          {subCategoryQuickLinks.map((item) => (
-            <Link
-              key={item.subCategory}
-              to={`/products?subCategory=${item.subCategory}`}
-              className="shrink-0 px-3 py-1 rounded-full bg-slate-100 hover:bg-indigo-600 hover:text-white text-slate-700 font-bold transition-all text-[11px]"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      {/* MegaMenu Dropdown */}
-      {activeMegaCategory && (
-        <MegaMenu
-          category={activeMegaCategory}
-          onClose={() => setActiveMegaCategory(null)}
-        />
       )}
 
-      {/* Mobile Drawer Navigation */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-slate-100 bg-white px-4 pt-4 pb-6 space-y-4">
-          <form onSubmit={handleSearchSubmit} className="relative">
-            <input
-              type="text"
-              placeholder="Search pants, shirts, dresses..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-slate-100 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5 pointer-events-none" />
-          </form>
+      {/* Live Search Modal */}
+      {searchOpen && (
+        <div className="fixed inset-0 z-50 bg-stone-950/70 backdrop-blur-md flex items-start justify-center pt-20 px-4 animate-fade-in">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full overflow-hidden border border-stone-200">
+            <div className="p-4 border-b border-stone-200 flex items-center gap-3 bg-stone-50">
+              <Search className="w-5 h-5 text-stone-400" />
+              <form onSubmit={handleSearchSubmit} className="flex-1">
+                <input
+                  type="text"
+                  autoFocus
+                  placeholder="Search Kaithady clothing (e.g. Oxford, Silk Dress, Jeans, Hoodie)..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-transparent text-sm font-bold text-stone-900 focus:outline-none"
+                />
+              </form>
+              <button onClick={() => setSearchOpen(false)} className="p-2 text-stone-400 hover:text-stone-900">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
 
-          <nav className="space-y-1">
-            {navCategories.map((cat) => (
-              <Link
-                key={cat.name}
-                to={cat.path}
-                onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-indigo-600 transition-colors"
-              >
-                {cat.name}
-              </Link>
-            ))}
-          </nav>
+            <div className="max-h-96 overflow-y-auto p-4 space-y-2">
+              {searchQuery.trim().length <= 1 ? (
+                <div className="py-6 text-center text-xs text-stone-400 font-semibold">
+                  Search Kaithady Adult (M-XXL) &amp; Kids clothing collection...
+                </div>
+              ) : searchFiltered.length === 0 ? (
+                <div className="py-8 text-center text-xs text-stone-500 font-bold">
+                  No matching apparel found for "{searchQuery}".
+                </div>
+              ) : (
+                searchFiltered.map((p) => (
+                  <Link
+                    key={p._id}
+                    to={`/product/${p._id}`}
+                    onClick={() => {
+                      setSearchOpen(false);
+                      setSearchQuery('');
+                    }}
+                    className="flex items-center gap-4 p-3 rounded-2xl hover:bg-stone-50 transition-colors border border-transparent hover:border-stone-200"
+                  >
+                    <img src={p.images?.[0]} alt={p.name} className="w-14 h-16 object-cover rounded-xl bg-stone-100" />
+                    <div>
+                      <h4 className="font-extrabold text-xs text-stone-900">{p.name}</h4>
+                      <span className="text-[10px] text-indigo-700 capitalize font-bold">{p.targetAudience || p.category}</span>
+                      <span className="font-black text-xs text-stone-900 block mt-0.5">
+                        Rs. {(p.price || 0).toLocaleString('en-US')}.00
+                      </span>
+                    </div>
+                  </Link>
+                ))
+              )}
+            </div>
+          </div>
         </div>
       )}
+
     </header>
   );
 };

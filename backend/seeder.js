@@ -9,320 +9,191 @@ const Product = require('./models/Product');
 const Order = require('./models/Order');
 
 const sampleProducts = [
-  // MEN'S CLOTHING
+  // 1. ADULT MEN
   {
-    name: 'Classic Oxford Cotton Shirt',
-    description: 'Premium 100% breathable Egyptian cotton oxford button-down shirt. Perfect for business casual and semi-formal wear.',
+    name: 'Classic Oxford Button-Down Cotton Shirt',
+    description: 'Tailored for the modern gentleman. Crafted from 100% breathable Egyptian Oxford cotton with reinforced collar, buttoned cuffs, and a flattering regular-slim profile.',
     category: 'men',
     subCategory: 'shirts',
-    price: 49.99,
-    rating: 4.8,
-    numReviews: 38,
+    targetAudience: 'Adult Men',
+    price: 6490,
+    originalPrice: 7500,
+    discount: 13,
     images: [
-      'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800&auto=format&fit=crop'
+      'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=1000&auto=format&fit=crop'
     ],
+    fabric: '100% Premium Egyptian Cotton',
+    fit: 'Classic Tailored Fit',
+    colors: [{ name: 'Sky Blue', hex: '#60A5FA' }],
     sizes: [
-      { size: 'XS', stock: 8 },
-      { size: 'S', stock: 15 },
-      { size: 'M', stock: 25 },
-      { size: 'L', stock: 30 },
-      { size: 'XL', stock: 20 },
-      { size: 'XXL', stock: 10 },
-      { size: 'XXXL', stock: 5 }
+      { size: 'M', stock: 15 },
+      { size: 'L', stock: 20 },
+      { size: 'XL', stock: 18 },
+      { size: 'XXL', stock: 10 }
     ],
-    color: 'Light Blue',
-    brand: 'UrbanCraft',
+    color: 'Sky Blue',
+    brand: 'UrbanCraft Men',
+    stockQuantity: 63,
+    isFeatured: true,
+    isNewArrival: true,
+    isBestseller: true,
+    rating: 4.9,
+    numReviews: 54
   },
   {
     name: 'Slim-Fit Stretch Denim Jeans',
-    description: 'Modern slim fit jeans crafted with durable stretch cotton denim for maximum comfort and flexible all-day movement.',
+    description: 'Versatile dark indigo denim built with flex-stretch cotton for unrestricted movement and durable daily wear.',
     category: 'men',
     subCategory: 'pants',
-    price: 59.99,
-    rating: 4.9,
-    numReviews: 45,
+    targetAudience: 'Adult Men',
+    price: 7850,
+    originalPrice: 8900,
+    discount: 12,
     images: [
-      'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=800&auto=format&fit=crop'
+      'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=1000&auto=format&fit=crop'
     ],
+    fabric: '98% Cotton, 2% Elastane Flex Denim',
+    fit: 'Slim Tapered Fit',
+    colors: [{ name: 'Dark Indigo', hex: '#1E3A8A' }],
     sizes: [
-      { size: 'XS', stock: 2 },
-      { size: 'S', stock: 1 },
-      { size: 'M', stock: 0 },
-      { size: 'L', stock: 0 },
-      { size: 'XL', stock: 0 },
-      { size: 'XXL', stock: 0 },
-      { size: 'XXXL', stock: 0 }
+      { size: 'M', stock: 12 },
+      { size: 'L', stock: 16 },
+      { size: 'XL', stock: 14 },
+      { size: 'XXL', stock: 8 }
     ],
     color: 'Dark Indigo',
-    brand: 'DenimCo',
-  },
-  {
-    name: 'Urban Heritage Biker Leather Jacket',
-    description: 'Rugged genuine leather biker jacket with asymmetrical zip closure, quilted shoulder padding, and metallic hardware details.',
-    category: 'men',
-    subCategory: 'jackets',
-    price: 149.99,
-    rating: 4.7,
-    numReviews: 29,
-    images: [
-      'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?w=800&auto=format&fit=crop'
-    ],
-    sizes: [
-      { size: 'XS', stock: 3 },
-      { size: 'S', stock: 5 },
-      { size: 'M', stock: 10 },
-      { size: 'L', stock: 12 },
-      { size: 'XL', stock: 8 },
-      { size: 'XXL', stock: 4 },
-      { size: 'XXXL', stock: 2 }
-    ],
-    color: 'Matte Black',
-    brand: 'LeatherSmith',
-  },
-  {
-    name: 'Minimalist Crewneck Heavyweight Tee',
-    description: 'Ultra-soft heavy organic cotton t-shirt with reinforced crew neck collar for timeless casual style.',
-    category: 'men',
-    subCategory: 't-shirts',
-    price: 24.99,
-    rating: 4.6,
-    numReviews: 54,
-    images: [
-      'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop'
-    ],
-    sizes: [
-      { size: 'XS', stock: 20 },
-      { size: 'S', stock: 40 },
-      { size: 'M', stock: 50 },
-      { size: 'L', stock: 45 },
-      { size: 'XL', stock: 30 },
-      { size: 'XXL', stock: 25 },
-      { size: 'XXXL', stock: 10 }
-    ],
-    color: 'Heather Grey',
-    brand: 'StyleVerse',
+    brand: 'DenimCo Men',
+    stockQuantity: 50,
+    isFeatured: true,
+    isBestseller: true,
+    rating: 4.8,
+    numReviews: 42
   },
 
-  // WOMEN'S CLOTHING
+  // 2. ADULT WOMEN
   {
-    name: 'Elegant Midi Wrap Silk Dress',
-    description: 'Flowing silk blend midi dress featuring an adjustable waist wrap tie, V-neckline, and flutter sleeves.',
+    name: 'Elegant Midi Wrap Silk Blend Dress',
+    description: 'Graceful flowing silhouette featuring an adjustable waist wrap tie, deep V-neckline, and subtle flutter sleeves.',
     category: 'women',
     subCategory: 'dresses',
-    price: 79.99,
-    rating: 4.9,
-    numReviews: 62,
+    targetAudience: 'Adult Women',
+    price: 9850,
+    originalPrice: 11500,
+    discount: 14,
     images: [
-      'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=800&auto=format&fit=crop'
+      'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=1000&auto=format&fit=crop'
     ],
+    fabric: '70% Silk, 30% Breathable Rayon',
+    fit: 'Adjustable Wrap Fit',
+    colors: [{ name: 'Emerald Green', hex: '#047857' }],
     sizes: [
-      { size: 'XS', stock: 10 },
-      { size: 'S', stock: 18 },
-      { size: 'M', stock: 22 },
-      { size: 'L', stock: 15 },
+      { size: 'M', stock: 14 },
+      { size: 'L', stock: 18 },
       { size: 'XL', stock: 12 },
-      { size: 'XXL', stock: 7 },
-      { size: 'XXXL', stock: 3 }
+      { size: 'XXL', stock: 8 }
     ],
     color: 'Emerald Green',
-    brand: 'Aura Label',
+    brand: 'Aura Women',
+    stockQuantity: 52,
+    isFeatured: true,
+    isNewArrival: true,
+    isBestseller: true,
+    rating: 4.9,
+    numReviews: 61
   },
   {
-    name: 'Chic Tailored Double-Breasted Blazer',
-    description: 'Sophisticated structured blazer with sharp peak lapels and tortoiseshell buttons for office and evening chic styling.',
+    name: 'Tailored Double-Breasted Executive Blazer',
+    description: 'Chic structured blazer with sharp peak lapels, tortoise-shell buttons, and full inner lining.',
     category: 'women',
     subCategory: 'jackets',
-    price: 89.99,
-    rating: 4.7,
-    numReviews: 24,
+    targetAudience: 'Adult Women',
+    price: 11500,
+    originalPrice: 13000,
+    discount: 11,
     images: [
-      'https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?w=800&auto=format&fit=crop'
+      'https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?w=1000&auto=format&fit=crop'
     ],
+    fabric: 'Structured Poly-Viscose Suiting Fabric',
+    fit: 'Tailored Professional Fit',
+    colors: [{ name: 'Cream Beige', hex: '#F3E8DC' }],
     sizes: [
-      { size: 'XS', stock: 5 },
-      { size: 'S', stock: 10 },
-      { size: 'M', stock: 16 },
-      { size: 'L', stock: 14 },
-      { size: 'XL', stock: 10 },
-      { size: 'XXL', stock: 5 },
-      { size: 'XXXL', stock: 2 }
+      { size: 'M', stock: 10 },
+      { size: 'L', stock: 15 },
+      { size: 'XL', stock: 12 },
+      { size: 'XXL', stock: 6 }
     ],
     color: 'Cream Beige',
-    brand: 'VogueLines',
-  },
-  {
-    name: 'High-Waisted Flare Ankle Jeans',
-    description: 'Retro-inspired high rise flared jeans featuring flattering vintage wash denim with slight stretch comfort.',
-    category: 'women',
-    subCategory: 'pants',
-    price: 54.99,
+    brand: 'VogueLines Women',
+    stockQuantity: 43,
+    isFeatured: true,
+    isBestseller: true,
     rating: 4.8,
-    numReviews: 41,
-    images: [
-      'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&auto=format&fit=crop'
-    ],
-    sizes: [
-      { size: 'XS', stock: 8 },
-      { size: 'S', stock: 15 },
-      { size: 'M', stock: 25 },
-      { size: 'L', stock: 20 },
-      { size: 'XL', stock: 15 },
-      { size: 'XXL', stock: 10 },
-      { size: 'XXXL', stock: 5 }
-    ],
-    color: 'Vintage Wash',
-    brand: 'DenimCo',
-  },
-  {
-    name: 'Boho Floral Print Chiffon Top',
-    description: 'Lightweight breathable chiffon blouse with intricate floral motifs, gathered wrist cuffs, and keyhole back closure.',
-    category: 'women',
-    subCategory: 'shirts',
-    price: 34.99,
-    rating: 4.5,
-    numReviews: 18,
-    images: [
-      'https://images.unsplash.com/photo-1534126511673-b6899657816a?w=800&auto=format&fit=crop'
-    ],
-    sizes: [
-      { size: 'XS', stock: 12 },
-      { size: 'S', stock: 20 },
-      { size: 'M', stock: 30 },
-      { size: 'L', stock: 25 },
-      { size: 'XL', stock: 18 },
-      { size: 'XXL', stock: 12 },
-      { size: 'XXXL', stock: 6 }
-    ],
-    color: 'Blush Pink',
-    brand: 'Aura Label',
+    numReviews: 36
   },
 
-  // BOYS' CLOTHING (KIDS - MALE)
+  // 3. CHILD MEN (BOYS)
   {
-    name: 'Dino Adventure Graphic Hoodie',
-    description: 'Cozy fleece-lined cotton hoodie featuring cool dinosaur illustrations and front kangaroo pocket for energetic young explorers.',
+    name: 'Dino Adventure Fleece Hoodie (Boys)',
+    description: 'Cozy fleece-lined cotton hoodie featuring energetic dinosaur graphics and front kangaroo pocket for active young boys.',
     category: 'boys',
     subCategory: 'hoodies',
-    price: 29.99,
-    rating: 4.9,
-    numReviews: 31,
+    targetAudience: 'Child Men (Boys)',
+    price: 4250,
+    originalPrice: 4800,
+    discount: 11,
     images: [
-      'https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop'
+      'https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=1000&auto=format&fit=crop'
     ],
-    sizes: [
-      { size: '2-3Y', stock: 15 },
-      { size: '4-5Y', stock: 20 },
-      { size: '6-7Y', stock: 25 },
-      { size: '8-9Y', stock: 18 }
-    ],
-    color: 'Navy Blue',
-    brand: 'LittleStars',
-  },
-  {
-    name: 'Rugged Kids Denim Trucker Jacket',
-    description: 'Classic durable denim jacket for boys with button chest pockets and soft collar line.',
-    category: 'boys',
-    subCategory: 'jackets',
-    price: 39.99,
-    rating: 4.6,
-    numReviews: 15,
-    images: [
-      'https://images.unsplash.com/photo-1503944583220-79d8926ad5e2?w=800&auto=format&fit=crop'
-    ],
-    sizes: [
-      { size: '2-3Y', stock: 10 },
-      { size: '4-5Y', stock: 14 },
-      { size: '6-7Y', stock: 16 },
-      { size: '8-9Y', stock: 12 }
-    ],
-    color: 'Light Wash Blue',
-    brand: 'JuniorDenim',
-  },
-  {
-    name: 'Comfort Active Jogger Pants',
-    description: 'Soft cotton fleece joggers with elastic drawcord waistband and ribbed ankles for daily play and school activities.',
-    category: 'boys',
-    subCategory: 'pants',
-    price: 22.99,
-    rating: 4.7,
-    numReviews: 22,
-    images: [
-      'https://images.unsplash.com/photo-1519457431-44ccd64a579b?w=800&auto=format&fit=crop'
-    ],
-    sizes: [
-      { size: '2-3Y', stock: 25 },
-      { size: '4-5Y', stock: 30 },
-      { size: '6-7Y', stock: 28 },
-      { size: '8-9Y', stock: 20 }
-    ],
-    color: 'Charcoal Grey',
-    brand: 'LittleStars',
-  },
-
-  // GIRLS' CLOTHING (KIDS - FEMALE)
-  {
-    name: 'Sunshine Floral Twirl Summer Dress',
-    description: 'Adorable 100% cotton dress with vibrant floral blooms and full circle twirl skirt that girls love.',
-    category: 'girls',
-    subCategory: 'dresses',
-    price: 32.99,
-    rating: 4.9,
-    numReviews: 50,
-    images: [
-      'https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?w=800&auto=format&fit=crop'
-    ],
-    sizes: [
-      { size: '2-3Y', stock: 18 },
-      { size: '4-5Y', stock: 22 },
-      { size: '6-7Y', stock: 20 },
-      { size: '8-9Y', stock: 15 }
-    ],
-    color: 'Yellow Blossom',
-    brand: 'BloomKids',
-  },
-  {
-    name: 'Unicorn Sparkle Knit Sweater',
-    description: 'Charming soft knit pullover sweater featuring embroidered unicorn design and sparkling sequin accents.',
-    category: 'girls',
-    subCategory: 'sweaters',
-    price: 27.99,
-    rating: 4.8,
-    numReviews: 27,
-    images: [
-      'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=800&auto=format&fit=crop'
-    ],
-    sizes: [
-      { size: '2-3Y', stock: 12 },
-      { size: '4-5Y', stock: 18 },
-      { size: '6-7Y', stock: 16 },
-      { size: '8-9Y', stock: 10 }
-    ],
-    color: 'Pastel Lavender',
-    brand: 'BloomKids',
-  },
-  {
-    name: 'Denim Bib Overalls with Pocket',
-    description: 'Cute retro denim overalls featuring adjustable shoulder straps, chest bib pocket, and durable stitch construction.',
-    category: 'girls',
-    subCategory: 'pants',
-    price: 36.99,
-    rating: 4.7,
-    numReviews: 19,
-    images: [
-      'https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800&auto=format&fit=crop'
-    ],
+    fabric: '80% Cotton, 20% Soft Fleece',
+    fit: 'Regular Kids Fit',
+    colors: [{ name: 'Navy Blue', hex: '#1E3A8A' }],
     sizes: [
       { size: '2-3Y', stock: 15 },
       { size: '4-5Y', stock: 20 },
       { size: '6-7Y', stock: 18 },
+      { size: '8-9Y', stock: 12 }
+    ],
+    color: 'Navy Blue',
+    brand: 'LittleStars Boys',
+    stockQuantity: 65,
+    isFeatured: true,
+    isNewArrival: true,
+    isBestseller: true,
+    rating: 4.9,
+    numReviews: 38
+  },
+
+  // 4. CHILD WOMEN (GIRLS)
+  {
+    name: 'Sunshine Floral Twirl Summer Dress (Girls)',
+    description: 'Adorable 100% cotton dress with vibrant floral blooms and a full circle twirl skirt that young girls adore.',
+    category: 'girls',
+    subCategory: 'dresses',
+    targetAudience: 'Child Women (Girls)',
+    price: 4750,
+    originalPrice: 5500,
+    discount: 13,
+    images: [
+      'https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?w=1000&auto=format&fit=crop'
+    ],
+    fabric: '100% Organic Breathable Cotton',
+    fit: 'Fit & Flare Twirl Fit',
+    colors: [{ name: 'Yellow Blossom', hex: '#F59E0B' }],
+    sizes: [
+      { size: '2-3Y', stock: 16 },
+      { size: '4-5Y', stock: 22 },
+      { size: '6-7Y', stock: 20 },
       { size: '8-9Y', stock: 14 }
     ],
-    color: 'Classic Denim',
-    brand: 'JuniorDenim',
+    color: 'Yellow Blossom',
+    brand: 'BloomKids Girls',
+    stockQuantity: 72,
+    isFeatured: true,
+    isNewArrival: true,
+    isBestseller: true,
+    rating: 4.9,
+    numReviews: 51
   }
 ];
 
@@ -330,93 +201,38 @@ const seedData = async () => {
   try {
     const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/cloth_shop_db';
     
-    // Seed cloth_shop_db
     await mongoose.connect(mongoUri, { dbName: 'cloth_shop_db' });
-    console.log('Connected to MongoDB [cloth_shop_db] for seeding...');
+    console.log('Connected to MongoDB for seeding Clothing Store...');
 
-    // Clear existing data
     await User.deleteMany();
     await Product.deleteMany();
     await Order.deleteMany();
-    console.log('Cleared existing database records.');
 
-    // Seed Demo Users
     const salt = await bcrypt.genSalt(10);
     const customerPassword = await bcrypt.hash('password123', salt);
     const adminPassword = await bcrypt.hash('admin123', salt);
 
-    const users = await User.insertMany([
-      {
-        name: 'John Customer',
-        email: 'customer@example.com',
-        password: customerPassword,
-        phone: '123-456-7890',
-        role: 'customer',
-        address: {
-          street: '123 Fashion Ave',
-          city: 'New York',
-          state: 'NY',
-          zipCode: '10001',
-          country: 'USA',
-        },
-      },
-      {
-        name: 'Admin Manager',
-        email: 'admin@example.com',
-        password: adminPassword,
-        phone: '987-654-3210',
-        role: 'admin',
-        address: {
-          street: '500 HQ Plaza',
-          city: 'San Francisco',
-          state: 'CA',
-          zipCode: '94105',
-          country: 'USA',
-        },
-      },
-    ]);
-
-    console.log(`Seeded ${users.length} users (1 customer, 1 admin).`);
-
-    // Calculate stockQuantity for each product before seeding
-    const productsToSeed = sampleProducts.map((p) => {
-      const stockQuantity = p.sizes.reduce((sum, s) => sum + s.stock, 0);
-      return { ...p, stockQuantity };
-    });
-
-    const createdProducts = await Product.insertMany(productsToSeed);
-    console.log(`Seeded ${createdProducts.length} products into [cloth_shop_db].`);
-
-    // Also seed into 'test' database to match default Atlas view in screenshot
-    await mongoose.disconnect();
-    await mongoose.connect(mongoUri, { dbName: 'test' });
-    await User.deleteMany();
-    await Product.deleteMany();
-    await Order.deleteMany();
     await User.insertMany([
       {
         name: 'John Customer',
         email: 'customer@example.com',
         password: customerPassword,
-        phone: '123-456-7890',
+        phone: '+94 77 123 4567',
         role: 'customer',
-        address: { street: '123 Fashion Ave', city: 'New York', state: 'NY', zipCode: '10001', country: 'USA' },
+        address: { street: '123 Fashion Ave', city: 'Colombo 03', state: 'Western Province', zipCode: '00300', country: 'Sri Lanka' },
       },
       {
-        name: 'Admin Manager',
+        name: 'Store Admin',
         email: 'admin@example.com',
         password: adminPassword,
-        phone: '987-654-3210',
+        phone: '+94 77 987 6543',
         role: 'admin',
-        address: { street: '500 HQ Plaza', city: 'San Francisco', state: 'CA', zipCode: '94105', country: 'USA' },
+        address: { street: '500 HQ Plaza', city: 'Colombo 03', state: 'Western Province', zipCode: '00300', country: 'Sri Lanka' },
       },
     ]);
-    await Product.insertMany(productsToSeed);
-    console.log(`Seeded records into [test] database as well.`);
 
-    console.log('\n--- SEEDING COMPLETED SUCCESSFULLY FOR BOTH DATABASES ---');
-    console.log('Customer Credentials: customer@example.com / password123');
-    console.log('Admin Credentials:    admin@example.com / admin123');
+    const createdProducts = await Product.insertMany(sampleProducts);
+    console.log(`Seeded ${createdProducts.length} Clothing products (Adult Men M/L/XL/XXL, Adult Women M/L/XL/XXL, Child Men, Child Women) successfully!`);
 
     process.exit();
   } catch (error) {

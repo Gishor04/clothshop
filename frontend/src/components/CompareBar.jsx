@@ -1,35 +1,35 @@
 import React from 'react';
-import { Layers, X, ArrowRight } from 'lucide-react';
+import { useCompare } from '../context/CompareContext';
+import { ArrowRightLeft, X, Check } from 'lucide-react';
 
-export const CompareBar = ({ compareList, onClear, onOpenModal, onRemoveItem }) => {
-  if (!compareList || compareList.length === 0) return null;
+export const CompareBar = () => {
+  const { compareItems, removeFromCompare, clearCompare, setIsCompareOpen } = useCompare();
+
+  if (compareItems.length === 0) return null;
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-slate-900 text-white px-6 py-3.5 rounded-2xl shadow-2xl border border-slate-800 flex items-center gap-6 animate-bounce">
-      <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center font-bold text-white">
-          <Layers className="w-4 h-4" />
-        </div>
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-stone-900 text-white px-5 py-3.5 rounded-3xl shadow-2xl border border-stone-800 flex items-center gap-4 max-w-2xl w-11/12 animate-fade-in backdrop-blur-md">
+      <div className="flex items-center gap-2">
+        <ArrowRightLeft className="w-5 h-5 text-amber-400" />
         <div>
-          <p className="font-extrabold text-xs">Product Comparison ({compareList.length}/3)</p>
-          <p className="text-[10px] text-slate-400">Select products to compare specs side-by-side</p>
+          <span className="text-xs font-black tracking-wide block">Compare Bags ({compareItems.length}/4)</span>
+          <span className="text-[10px] text-stone-400">Side-by-side spec comparison</span>
         </div>
       </div>
 
-      {/* Selected product thumbnails */}
-      <div className="flex items-center gap-2">
-        {compareList.map((item) => (
-          <div key={item._id} className="relative group">
-            <img
-              src={item.images?.[0]}
-              alt=""
-              className="w-9 h-11 object-cover rounded-lg border border-slate-700 bg-slate-800"
-            />
+      <div className="flex items-center gap-2 overflow-x-auto flex-1 py-1">
+        {compareItems.map((item) => (
+          <div
+            key={item._id}
+            className="flex items-center gap-1.5 bg-stone-800 px-2.5 py-1 rounded-xl text-xs border border-stone-700 flex-shrink-0"
+          >
+            <span className="font-semibold truncate max-w-[100px] text-[11px]">{item.name}</span>
             <button
-              onClick={() => onRemoveItem(item._id)}
-              className="absolute -top-1 -right-1 bg-rose-500 text-white rounded-full p-0.5 text-[9px] opacity-0 group-hover:opacity-100 transition-opacity"
+              onClick={() => removeFromCompare(item._id)}
+              className="text-stone-400 hover:text-white"
+              title="Remove item"
             >
-              <X className="w-2.5 h-2.5" />
+              <X className="w-3.5 h-3.5" />
             </button>
           </div>
         ))}
@@ -37,17 +37,15 @@ export const CompareBar = ({ compareList, onClear, onOpenModal, onRemoveItem }) 
 
       <div className="flex items-center gap-2">
         <button
-          onClick={onOpenModal}
-          disabled={compareList.length < 2}
-          className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-700 disabled:cursor-not-allowed text-white text-xs font-bold transition-all flex items-center gap-1.5"
+          onClick={() => setIsCompareOpen(true)}
+          className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold rounded-xl shadow-md transition-all active:scale-95 flex-shrink-0"
         >
-          <span>Compare Now</span>
-          <ArrowRight className="w-3.5 h-3.5" />
+          Compare Now
         </button>
 
         <button
-          onClick={onClear}
-          className="text-xs text-slate-400 hover:text-white font-bold p-2"
+          onClick={clearCompare}
+          className="text-stone-400 hover:text-stone-200 text-[10px] font-bold underline px-1"
         >
           Clear
         </button>

@@ -15,7 +15,7 @@ import {
 
 /* ── shared helpers ──────────────────────────────────── */
 const api = (url, opts = {}, logout) => authFetch(url, opts, logout);
-const fmt = (n) => `₹${Number(n || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+const fmt = (n) => `Rs. ${Number(n || 0).toLocaleString('en-US')}.00`;
 const badge = (status) => {
   const m = {
     pending: 'bg-amber-100 text-amber-700',

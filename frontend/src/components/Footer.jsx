@@ -1,157 +1,186 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  ShoppingBag,
-  ShieldCheck,
-  Truck,
-  RefreshCw,
-  Mail,
-  MapPin,
-  Phone,
-  Clock,
-  MessageCircle,
-  ExternalLink
-} from 'lucide-react';
+import { Mail, Phone, MapPin, Send, ShieldCheck, Truck, RotateCcw, Award } from 'lucide-react';
 
 export const Footer = () => {
-  return (
-    <>
-      {/* Floating WhatsApp Quick Order Button */}
-      <a
-        href="https://wa.me/919876543210?text=Hi%20StyleVerse!%20I%20have%20an%20inquiry%20or%20want%20to%20place%20an%20order."
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 left-6 z-40 bg-emerald-500 hover:bg-emerald-600 text-white p-3.5 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110 flex items-center gap-2 font-bold text-xs group"
-        title="Chat on WhatsApp"
-      >
-        <MessageCircle className="w-5 h-5 fill-white" />
-        <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-500 text-xs">
-          Order on WhatsApp
-        </span>
-      </a>
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
 
-      <footer className="bg-slate-900 text-slate-300 mt-20 border-t border-slate-800">
-        {/* Trust Perks bar */}
-        <div className="border-b border-slate-800 py-10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-900/50 text-indigo-400 flex items-center justify-center">
-                <Truck className="w-6 h-6" />
-              </div>
-              <div>
-                <h4 className="text-white font-bold text-sm">Free Express Shipping</h4>
-                <p className="text-xs text-slate-400">On all orders above $75. Quick 2-day delivery.</p>
-              </div>
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    if (email.trim()) {
+      setSubscribed(true);
+      setEmail('');
+      setTimeout(() => setSubscribed(false), 5000);
+    }
+  };
+
+  return (
+    <footer className="bg-stone-950 text-stone-300 font-['Plus_Jakarta_Sans',sans-serif] border-t border-stone-800">
+      
+      {/* Top Value Proposition Bar */}
+      <div className="border-b border-stone-800 bg-stone-900/60 py-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center flex-shrink-0 border border-indigo-500/20">
+              <Truck className="w-6 h-6" />
             </div>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-900/50 text-indigo-400 flex items-center justify-center">
-                <RefreshCw className="w-6 h-6" />
-              </div>
-              <div>
-                <h4 className="text-white font-bold text-sm">Hassle-Free 30-Day Returns</h4>
-                <p className="text-xs text-slate-400">Not satisfied? Return or exchange with zero fees.</p>
-              </div>
+            <div>
+              <h4 className="font-extrabold text-sm text-white">Free Island-Wide Delivery</h4>
+              <p className="text-xs text-stone-400 mt-0.5">On all orders over Rs. 10,000 across Sri Lanka</p>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-900/50 text-indigo-400 flex items-center justify-center">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <div>
-                <h4 className="text-white font-bold text-sm">Secure Checkout Guarantee</h4>
-                <p className="text-xs text-slate-400">Encrypted transactions & full buyer protection.</p>
-              </div>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center flex-shrink-0 border border-emerald-500/20">
+              <ShieldCheck className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="font-extrabold text-sm text-white">Cash on Delivery (COD)</h4>
+              <p className="text-xs text-stone-400 mt-0.5">Pay safely at your doorstep when package arrives</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center flex-shrink-0 border border-amber-500/20">
+              <Award className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="font-extrabold text-sm text-white">Adult Sizes: M, L, XL, XXL</h4>
+              <p className="text-xs text-stone-400 mt-0.5">Accurate fits for Adult Men, Women &amp; Kids</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-400 flex items-center justify-center flex-shrink-0 border border-purple-500/20">
+              <RotateCcw className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="font-extrabold text-sm text-white">14-Day Free Size Swap</h4>
+              <p className="text-xs text-stone-400 mt-0.5">Hassle-free size or color exchange policy</p>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Main Footer Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 grid grid-cols-1 md:grid-cols-4 gap-10">
-          {/* Brand Info */}
-          <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold">
-                <ShoppingBag className="w-4 h-4" />
-              </div>
-              <span className="text-xl font-black text-white">StyleVerse</span>
+      {/* Main Footer Body */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
+        
+        {/* Brand Column */}
+        <div className="lg:col-span-2 space-y-4">
+          <Link to="/" className="flex items-center gap-2">
+            <div className="w-10 h-10 rounded-2xl bg-indigo-700 text-white font-black text-xl flex items-center justify-center shadow-md">
+              K
             </div>
-            <p className="text-xs text-slate-400 leading-relaxed mb-4">
-              Your premiere clothing shop for high quality apparel across Men's, Women's, Boys', and Girls' collections. Sustainable fabrics, perfect fitting, and friendly customer care.
-            </p>
-          </div>
+            <div>
+              <span className="text-2xl font-black tracking-tight text-white block leading-none">KAITHADY</span>
+              <span className="text-[9px] uppercase tracking-widest text-indigo-400 font-extrabold">Clothing Boutique</span>
+            </div>
+          </Link>
 
-          {/* Categories */}
-          <div>
-            <h5 className="text-white font-bold text-sm mb-4">Shop Categories</h5>
-            <ul className="space-y-2.5 text-xs">
-              <li><Link to="/products?category=men" className="hover:text-indigo-400 transition-colors">Men's Fashion</Link></li>
-              <li><Link to="/products?category=women" className="hover:text-indigo-400 transition-colors">Women's Collection</Link></li>
-              <li><Link to="/products?category=boys" className="hover:text-indigo-400 transition-colors">Boys' Apparel (Kids)</Link></li>
-              <li><Link to="/products?category=girls" className="hover:text-indigo-400 transition-colors">Girls' Wear (Kids)</Link></li>
-              <li><Link to="/products?subCategory=pants" className="hover:text-amber-300 font-bold transition-colors">👖 Pants & Jeans Collection</Link></li>
-            </ul>
-          </div>
+          <p className="text-xs text-stone-400 leading-relaxed max-w-sm">
+            Kaithady Clothing Boutique. Curated apparel for Adult Men (M-XXL), Adult Women (M-XXL), Child Men (Boys), and Child Women (Girls). Delivered across Sri Lanka.
+          </p>
 
-          {/* Clothing Shop Location & Contact Details */}
-          <div>
-            <h5 className="text-white font-bold text-sm mb-4">Store Location & Details</h5>
-            <div className="space-y-3 text-xs text-slate-400">
-              <div className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-white font-semibold">StyleVerse Flagship Store</p>
-                  <p>123 Fashion Avenue, Grand Plaza</p>
-                  <p>Downtown District, NY 10001</p>
-                  <a
-                    href="https://maps.google.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-[11px] text-indigo-400 hover:underline mt-1 font-semibold"
-                  >
-                    <span>View on Google Maps</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2.5 border-t border-slate-800/80 pt-2.5">
-                <Phone className="w-4 h-4 text-indigo-400 shrink-0" />
-                <div>
-                  <p className="text-white font-semibold">Phone / WhatsApp</p>
-                  <p>+91 98765-43210 / +1 (800) 555-STYLE</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2.5 border-t border-slate-800/80 pt-2.5">
-                <Clock className="w-4 h-4 text-indigo-400 shrink-0" />
-                <div>
-                  <p className="text-white font-semibold">Operating Hours</p>
-                  <p>Mon - Sat: 9:00 AM - 9:00 PM</p>
-                </div>
-              </div>
+          <div className="space-y-2 text-xs text-stone-400 font-medium">
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-indigo-400" />
+              <span>Flagship Boutique: Kaithady, Jaffna &amp; Colombo 03, Sri Lanka</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Phone className="w-4 h-4 text-emerald-400" />
+              <span>Direct Support: +94 77 000 0000 / +94 11 234 5678</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Mail className="w-4 h-4 text-amber-400" />
+              <span>hello@kaithadyclothing.lk / orders@kaithadyclothing.lk</span>
             </div>
           </div>
 
-          {/* Newsletter Subscription */}
-          <div>
-            <h5 className="text-white font-bold text-sm mb-4">Stay Connected</h5>
-            <p className="text-xs text-slate-400 mb-3">Subscribe for exclusive discount codes & new arrivals!</p>
-            <div className="flex gap-2">
+          <div className="pt-2">
+            <a
+              href="https://wa.me/94770000000?text=Hi%20Kaithady%20Clothing%20Boutique%2C%20I%27d%20like%20to%20order."
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-2xl shadow-lg transition-all"
+            >
+              <Phone className="w-4 h-4" /> Direct WhatsApp Order
+            </a>
+          </div>
+        </div>
+
+        {/* Shop Column */}
+        <div className="space-y-3">
+          <h4 className="text-sm font-extrabold text-white uppercase tracking-wider">Departments</h4>
+          <ul className="space-y-2 text-xs text-stone-400 font-medium">
+            <li><Link to="/products?category=men" className="hover:text-white transition-colors">Adult Men (M, L, XL, XXL)</Link></li>
+            <li><Link to="/products?category=women" className="hover:text-white transition-colors">Adult Women (M, L, XL, XXL)</Link></li>
+            <li><Link to="/products?category=boys" className="hover:text-white transition-colors">Child Men (Boys)</Link></li>
+            <li><Link to="/products?category=girls" className="hover:text-white transition-colors">Child Women (Girls)</Link></li>
+            <li><Link to="/products?onSale=true" className="hover:text-amber-400 font-bold transition-colors">Avurudu Sale (Up to 25% OFF)</Link></li>
+          </ul>
+        </div>
+
+        {/* Assistance Column */}
+        <div className="space-y-3">
+          <h4 className="text-sm font-extrabold text-white uppercase tracking-wider">Assistance</h4>
+          <ul className="space-y-2 text-xs text-stone-400 font-medium">
+            <li><Link to="/faq" className="hover:text-white transition-colors">Size Chart Guide (M-XXL)</Link></li>
+            <li><Link to="/policies" className="hover:text-white transition-colors">Shipping &amp; Delivery Info</Link></li>
+            <li><Link to="/policies" className="hover:text-white transition-colors">14-Day Free Size Swap</Link></li>
+            <li><Link to="/faq" className="hover:text-white transition-colors">FAQ &amp; Care Instructions</Link></li>
+            <li><Link to="/contact" className="hover:text-white transition-colors">Contact Boutique</Link></li>
+          </ul>
+        </div>
+
+        {/* Newsletter Column */}
+        <div className="space-y-4">
+          <h4 className="text-sm font-extrabold text-white uppercase tracking-wider">Kaithady Insider</h4>
+          <p className="text-xs text-stone-400 leading-relaxed">
+            Subscribe for early notifications on new seasonal apparel drops &amp; festival discounts.
+          </p>
+
+          <form onSubmit={handleSubscribe} className="space-y-2">
+            <div className="relative">
               <input
                 type="email"
-                placeholder="Enter your email"
-                className="bg-slate-800 text-white text-xs px-3 py-2 rounded-xl border border-slate-700 focus:outline-none focus:border-indigo-500 w-full"
+                required
+                placeholder="Enter your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-3.5 py-2.5 bg-stone-900 border border-stone-800 rounded-xl text-xs text-white placeholder-stone-500 focus:outline-none focus:border-indigo-500"
               />
-              <button className="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-2 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center">
-                <Mail className="w-4 h-4" />
+              <button
+                type="submit"
+                className="absolute right-1 top-1 bottom-1 px-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold transition-all"
+              >
+                <Send className="w-3.5 h-3.5" />
               </button>
             </div>
-          </div>
+
+            {subscribed && (
+              <p className="text-[11px] text-emerald-400 font-bold">
+                Thank you for subscribing to Kaithady Insider!
+              </p>
+            )}
+          </form>
         </div>
 
-        <div className="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
-          &copy; {new Date().getFullYear()} StyleVerse Clothing Shop. All rights reserved. Crafted with care.
+      </div>
+
+      {/* Bottom Copyright */}
+      <div className="border-t border-stone-900 bg-stone-950 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-stone-500">
+          <p>© 2026 Kaithady Clothing Boutique Sri Lanka. All Rights Reserved.</p>
+
+          <div className="flex items-center gap-3 font-semibold text-[11px]">
+            <span className="px-2.5 py-1 rounded bg-stone-900 text-stone-300 border border-stone-800">Visa / Mastercard</span>
+            <span className="px-2.5 py-1 rounded bg-stone-900 text-emerald-400 border border-stone-800 font-bold">Cash on Delivery</span>
+            <span className="px-2.5 py-1 rounded bg-stone-900 text-amber-400 border border-stone-800 font-bold">Koko / Mintpay</span>
+          </div>
         </div>
-      </footer>
-    </>
+      </div>
+
+    </footer>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Package, Clock, CheckCircle2, Truck, AlertCircle, ShoppingBag } from 'lucide-react';
+import { SeoMeta } from '../components/SeoMeta';
+import { Package, Clock, CheckCircle2, Truck, ShoppingBag } from 'lucide-react';
 
 export const OrderHistoryPage = () => {
   const [orders, setOrders] = useState([]);
@@ -10,7 +11,10 @@ export const OrderHistoryPage = () => {
     const fetchOrders = async () => {
       try {
         const token = localStorage.getItem('cloth_shop_token');
-        if (!token) return;
+        if (!token) {
+          setLoading(false);
+          return;
+        }
 
         const res = await fetch('/api/orders/my-orders', {
           headers: { Authorization: `Bearer ${token}` },
@@ -37,95 +41,102 @@ export const OrderHistoryPage = () => {
       case 'shipped':
         return <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-[11px] font-extrabold flex items-center gap-1"><Truck className="w-3.5 h-3.5" /> Shipped</span>;
       case 'processing':
-        return <span className="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-[11px] font-extrabold flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> Processing</span>;
+        return <span className="px-3 py-1 bg-amber-100 text-amber-900 rounded-full text-[11px] font-extrabold flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> Processing</span>;
       default:
-        return <span className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-[11px] font-extrabold flex items-center gap-1"><Package className="w-3.5 h-3.5" /> Order Placed</span>;
+        return <span className="px-3 py-1 bg-amber-100 text-amber-900 rounded-full text-[11px] font-extrabold flex items-center gap-1"><Package className="w-3.5 h-3.5" /> Order Placed</span>;
     }
   };
 
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-16 space-y-6">
-        <div className="h-8 bg-slate-200 rounded-xl w-48 animate-pulse" />
-        <div className="h-48 bg-slate-200 rounded-3xl animate-pulse" />
+        <div className="h-8 bg-stone-200 rounded-xl w-48 animate-pulse" />
+        <div className="h-48 bg-stone-200 rounded-3xl animate-pulse" />
       </div>
     );
   }
 
   if (orders.length === 0) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-20 text-center space-y-4">
-        <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-slate-400">
+      <div className="max-w-4xl mx-auto px-4 py-20 text-center space-y-4 font-['Plus_Jakarta_Sans',sans-serif]">
+        <SeoMeta title="My Bag Orders — Kottuba Sri Lanka" />
+        <div className="w-16 h-16 bg-stone-100 rounded-full flex items-center justify-center mx-auto text-stone-400">
           <Package className="w-8 h-8" />
         </div>
-        <h2 className="text-2xl font-bold text-slate-900">No Orders Found</h2>
-        <p className="text-xs text-slate-500 max-w-sm mx-auto">
-          You haven't placed any orders yet. Check out our store to find your next favorite outfit!
+        <h2 className="text-2xl font-black text-stone-900">No Orders Found</h2>
+        <p className="text-xs text-stone-500 max-w-sm mx-auto">
+          You haven't placed any Kottuba orders yet. Explore our Sri Lanka leather collection to find your next bag!
         </p>
         <Link
           to="/products"
-          className="inline-block px-6 py-3 rounded-xl bg-indigo-600 text-white font-bold text-xs shadow-md"
+          className="inline-block px-6 py-3 rounded-2xl bg-amber-900 text-white font-bold text-xs shadow-md"
         >
-          Explore Clothing
+          Explore Bag Catalog
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 font-['Plus_Jakarta_Sans',sans-serif]">
+      <SeoMeta title="My Orders & Delivery History — Kottuba Sri Lanka" />
+
       <div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900">Order History</h1>
-        <p className="text-xs text-slate-500 mt-1">Track status and view details of your previous purchases</p>
+        <h1 className="text-2xl sm:text-3xl font-black text-stone-900">My Kottuba Order History</h1>
+        <p className="text-xs text-stone-500 mt-1">Track status and view details of your handcrafted bag purchases</p>
       </div>
 
       <div className="space-y-6">
         {orders.map((order) => (
           <div
             key={order._id}
-            className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-sm space-y-6"
+            className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-sm space-y-6"
           >
             {/* Header bar */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-stone-100 pb-4">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Order ID</span>
-                <span className="text-sm font-extrabold text-slate-900">#{order._id.slice(-8).toUpperCase()}</span>
-                <span className="text-xs text-slate-500 ml-3">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block">Order ID</span>
+                <span className="text-sm font-black text-stone-900">#{order._id.slice(-8).toUpperCase()}</span>
+                <span className="text-xs text-stone-500 ml-3">
                   Placed on {new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                 </span>
               </div>
 
               <div className="flex items-center gap-3">
                 {getStatusBadge(order.orderStatus)}
-                <span className="text-base font-black text-indigo-600">${order.totalAmount?.toFixed(2)}</span>
+                <span className="text-base font-black text-amber-900">
+                  Rs. {(order.totalAmount || 0).toLocaleString('en-US')}.00
+                </span>
               </div>
             </div>
 
             {/* Products thumbnails */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {order.products?.map((item, i) => (
-                <div key={i} className="flex items-center gap-3 p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                <div key={i} className="flex items-center gap-3 p-3 bg-stone-50 rounded-2xl border border-stone-100">
                   <img
-                    src={item.image || 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=200'}
+                    src={item.image || 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=200'}
                     alt=""
                     className="w-14 h-16 object-cover rounded-xl bg-white flex-shrink-0"
                   />
                   <div className="min-w-0">
-                    <p className="text-xs font-bold text-slate-900 truncate">{item.name}</p>
-                    <p className="text-[11px] text-slate-500">Size: {item.size} &bull; Qty: {item.quantity}</p>
-                    <p className="text-xs font-extrabold text-slate-800">${(item.price * item.quantity).toFixed(2)}</p>
+                    <p className="text-xs font-bold text-stone-900 truncate">{item.name}</p>
+                    <p className="text-[11px] text-stone-500">Qty: {item.quantity}</p>
+                    <p className="text-xs font-extrabold text-stone-800">
+                      Rs. {((item.price || 0) * item.quantity).toLocaleString('en-US')}.00
+                    </p>
                   </div>
                 </div>
               ))}
             </div>
 
             {/* Shipping Address Footer */}
-            <div className="text-xs text-slate-500 bg-slate-50/50 p-3.5 rounded-2xl border border-slate-100 flex items-center justify-between">
+            <div className="text-xs text-stone-500 bg-stone-50 p-3.5 rounded-2xl border border-stone-100 flex items-center justify-between">
               <div>
-                <strong className="text-slate-900">Ship to: </strong>
-                {order.shippingAddress?.name}, {order.shippingAddress?.street}, {order.shippingAddress?.city}, {order.shippingAddress?.state} {order.shippingAddress?.zipCode}
+                <strong className="text-stone-900">Deliver to: </strong>
+                {order.shippingAddress?.name}, {order.shippingAddress?.street}, {order.shippingAddress?.city}, {order.shippingAddress?.district}
               </div>
-              <span className="font-semibold text-slate-700 capitalize">Payment: {order.paymentStatus}</span>
+              <span className="font-semibold text-stone-700 capitalize">Payment: {order.paymentStatus || 'COD'}</span>
             </div>
           </div>
         ))}

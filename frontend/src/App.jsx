@@ -1,8 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider, useCart } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
+import { CompareProvider } from './context/CompareContext';
 
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
@@ -16,6 +17,11 @@ import { CheckoutPage } from './pages/CheckoutPage';
 import { OrderHistoryPage } from './pages/OrderHistoryPage';
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
 import { AuthPage } from './pages/AuthPage';
+import { ContactPage } from './pages/ContactPage';
+import { AboutUsPage } from './pages/AboutUsPage';
+import { FaqPage } from './pages/FaqPage';
+import { WishlistPage } from './pages/WishlistPage';
+import { PolicyPage } from './pages/PolicyPage';
 
 const ProtectedAdminRoute = ({ children }) => {
   const { user } = useAuth();
@@ -27,8 +33,8 @@ const ToastNotification = () => {
   const { notification } = useCart();
   if (!notification) return null;
   return (
-    <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl border border-slate-800 text-xs font-bold animate-bounce flex items-center gap-2">
-      <span className="w-2 h-2 rounded-full bg-emerald-400" />
+    <div className="fixed bottom-6 right-6 z-50 bg-stone-900 text-white px-5 py-3 rounded-2xl shadow-2xl border border-stone-800 text-xs font-bold animate-bounce flex items-center gap-2">
+      <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
       <span>{notification}</span>
     </div>
   );
@@ -36,7 +42,7 @@ const ToastNotification = () => {
 
 // Layout wrapper — hides Navbar/Footer for admin panel
 const ShopLayout = ({ children }) => (
-  <div className="min-h-screen flex flex-col justify-between bg-slate-50 text-slate-900 font-['Plus_Jakarta_Sans',sans-serif]">
+  <div className="min-h-screen flex flex-col justify-between bg-stone-50 text-stone-900 font-['Plus_Jakarta_Sans',sans-serif]">
     <div>
       <Navbar />
       <main>{children}</main>
@@ -66,6 +72,11 @@ export function AppContent() {
       <Route path="/product/:id" element={<ShopLayout><ProductDetailPage /></ShopLayout>} />
       <Route path="/cart" element={<ShopLayout><CartPage /></ShopLayout>} />
       <Route path="/checkout" element={<ShopLayout><CheckoutPage /></ShopLayout>} />
+      <Route path="/contact" element={<ShopLayout><ContactPage /></ShopLayout>} />
+      <Route path="/about" element={<ShopLayout><AboutUsPage /></ShopLayout>} />
+      <Route path="/faq" element={<ShopLayout><FaqPage /></ShopLayout>} />
+      <Route path="/wishlist" element={<ShopLayout><WishlistPage /></ShopLayout>} />
+      <Route path="/policies" element={<ShopLayout><PolicyPage /></ShopLayout>} />
       <Route path="/orders" element={<ShopLayout><OrderHistoryPage /></ShopLayout>} />
       <Route path="/auth" element={<ShopLayout><AuthPage /></ShopLayout>} />
 
@@ -80,7 +91,9 @@ export default function App() {
       <AuthProvider>
         <CartProvider>
           <WishlistProvider>
-            <AppContent />
+            <CompareProvider>
+              <AppContent />
+            </CompareProvider>
           </WishlistProvider>
         </CartProvider>
       </AuthProvider>

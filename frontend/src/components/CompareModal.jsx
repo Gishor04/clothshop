@@ -1,113 +1,152 @@
 import React from 'react';
-import { X, Layers, Star, ShoppingBag, Check, AlertCircle } from 'lucide-react';
+import { useCompare } from '../context/CompareContext';
 import { useCart } from '../context/CartContext';
+import { X, ShoppingBag, Star, Check, Trash2 } from 'lucide-react';
 
-export const CompareModal = ({ compareList, isOpen, onClose }) => {
+export const CompareModal = () => {
+  const { compareItems, isCompareOpen, setIsCompareOpen, removeFromCompare, clearCompare } = useCompare();
   const { addToCart } = useCart();
-  if (!isOpen || !compareList || compareList.length === 0) return null;
+
+  if (!isCompareOpen || compareItems.length === 0) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onClose} />
-
-      <div className="relative bg-white rounded-3xl shadow-2xl max-w-4xl w-full p-6 sm:p-8 space-y-6 z-10 my-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/80 backdrop-blur-md animate-fade-in overflow-y-auto">
+      <div className="relative w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-amber-900/10 my-8 p-6 sm:p-8 max-h-[90vh] flex flex-col">
         
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
-              <Layers className="w-5 h-5" />
-            </div>
-            <div>
-              <h2 className="text-xl font-extrabold text-slate-900">Compare Products</h2>
-              <p className="text-xs text-slate-500">Side-by-side comparison of selected apparel items</p>
-            </div>
+        <div className="flex items-center justify-between border-b border-stone-200 pb-4 mb-6">
+          <div>
+            <h2 className="text-2xl font-black text-stone-900">Product Comparison</h2>
+            <p className="text-xs text-stone-500 mt-0.5">Compare specs, materials, dimensions, and craftsmanship across items.</p>
           </div>
-          <button
-            onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-slate-900 hover:bg-slate-100"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-
-        {/* Comparison Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 overflow-x-auto">
-          {compareList.map((product) => (
-            <div
-              key={product._id}
-              className="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-4 flex flex-col justify-between"
+          
+          <div className="flex items-center gap-3">
+            <button
+              onClick={clearCompare}
+              className="text-xs font-bold text-rose-600 hover:text-rose-800 flex items-center gap-1"
             >
-              <div className="space-y-3">
-                <div className="aspect-[3/4] bg-white rounded-xl overflow-hidden shadow-xs">
-                  <img
-                    src={product.images?.[0] || 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400'}
-                    alt=""
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-
-                <div>
-                  <span className="text-[10px] font-extrabold text-indigo-600 uppercase tracking-wider bg-indigo-50 px-2 py-0.5 rounded-full inline-block mb-1">
-                    {product.brand}
-                  </span>
-                  <h3 className="font-extrabold text-sm text-slate-900 line-clamp-1">{product.name}</h3>
-                  <p className="text-lg font-black text-slate-900 mt-1">${product.price?.toFixed(2)}</p>
-                </div>
-
-                {/* Specs List */}
-                <div className="space-y-2 text-xs text-slate-600 pt-2 border-t border-slate-200">
-                  <div className="flex justify-between">
-                    <span className="text-slate-400 font-semibold">Category:</span>
-                    <span className="font-bold capitalize">{product.category}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400 font-semibold">SubCategory:</span>
-                    <span className="font-bold capitalize">{product.subCategory}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400 font-semibold">Color:</span>
-                    <span className="font-bold capitalize">{product.color}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400 font-semibold">Rating:</span>
-                    <span className="font-bold text-amber-500 flex items-center gap-1">
-                      <Star className="w-3.5 h-3.5 fill-amber-400" />
-                      {product.rating || 4.8} ({product.numReviews || 24})
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400 font-semibold">Stock:</span>
-                    <span className="font-bold text-emerald-600">
-                      {product.stockQuantity > 0 ? `${product.stockQuantity} in stock` : 'Out of Stock'}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400 font-semibold">Sizes:</span>
-                    <span className="font-bold text-slate-800">
-                      {product.sizes?.map((s) => s.size).join(', ')}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                onClick={() => {
-                  const firstAvailableSize = product.sizes?.find((s) => s.stock > 0)?.size;
-                  if (firstAvailableSize) {
-                    addToCart(product, firstAvailableSize, 1);
-                  }
-                }}
-                disabled={product.stockQuantity === 0}
-                className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-indigo-600 text-white text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
-              >
-                <ShoppingBag className="w-3.5 h-3.5" />
-                <span>Add to Cart</span>
-              </button>
-            </div>
-          ))}
+              <Trash2 className="w-3.5 h-3.5" /> Clear All
+            </button>
+            <button
+              onClick={() => setIsCompareOpen(false)}
+              className="p-2 rounded-full bg-stone-100 text-stone-600 hover:bg-stone-900 hover:text-white transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
+
+        {/* Comparison Matrix Table */}
+        <div className="overflow-x-auto flex-1">
+          <table className="w-full text-left border-collapse min-w-[650px]">
+            <thead>
+              <tr className="border-b border-stone-200">
+                <th className="p-3 text-xs font-bold uppercase tracking-wider text-stone-400 w-1/5">Attribute</th>
+                {compareItems.map((product) => (
+                  <th key={product._id} className="p-3 w-1/4 align-top">
+                    <div className="relative group">
+                      <button
+                        onClick={() => removeFromCompare(product._id)}
+                        className="absolute top-0 right-0 p-1 bg-stone-100 text-stone-500 hover:bg-rose-600 hover:text-white rounded-full transition-colors"
+                        title="Remove from comparison"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                      <img
+                        src={product.images?.[0]}
+                        alt={product.name}
+                        className="w-full aspect-[4/5] object-cover rounded-2xl bg-stone-100 mb-2 shadow-sm"
+                      />
+                      <h3 className="font-extrabold text-sm text-stone-900 line-clamp-1">{product.name}</h3>
+                      <span className="text-xs font-bold text-amber-800">
+                        Rs. {(product.price || 0).toLocaleString('en-US')}.00
+                      </span>
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-stone-100 text-xs">
+              <tr>
+                <td className="p-3 font-extrabold text-stone-700 bg-stone-50/50">Brand</td>
+                {compareItems.map((item) => (
+                  <td key={item._id} className="p-3 font-semibold text-stone-800">{item.brand || 'Kottuba Leather'}</td>
+                ))}
+              </tr>
+              <tr>
+                <td className="p-3 font-extrabold text-stone-700 bg-stone-50/50">Category</td>
+                {compareItems.map((item) => (
+                  <td key={item._id} className="p-3 capitalize font-semibold text-stone-800">{item.category}</td>
+                ))}
+              </tr>
+              <tr>
+                <td className="p-3 font-extrabold text-stone-700 bg-stone-50/50">Material</td>
+                {compareItems.map((item) => (
+                  <td key={item._id} className="p-3 font-semibold text-stone-800">{item.material || 'Full-Grain Leather'}</td>
+                ))}
+              </tr>
+              <tr>
+                <td className="p-3 font-extrabold text-stone-700 bg-stone-50/50">Dimensions</td>
+                {compareItems.map((item) => (
+                  <td key={item._id} className="p-3 font-semibold text-stone-800">{item.dimensions || '38 x 28 x 10 cm'}</td>
+                ))}
+              </tr>
+              <tr>
+                <td className="p-3 font-extrabold text-stone-700 bg-stone-50/50">Weight</td>
+                {compareItems.map((item) => (
+                  <td key={item._id} className="p-3 font-semibold text-stone-800">{item.weight || '1.1 kg'}</td>
+                ))}
+              </tr>
+              <tr>
+                <td className="p-3 font-extrabold text-stone-700 bg-stone-50/50">Capacity</td>
+                {compareItems.map((item) => (
+                  <td key={item._id} className="p-3 font-semibold text-stone-800">{item.capacity || '14 L'}</td>
+                ))}
+              </tr>
+              <tr>
+                <td className="p-3 font-extrabold text-stone-700 bg-stone-50/50">Rating</td>
+                {compareItems.map((item) => (
+                  <td key={item._id} className="p-3">
+                    <div className="flex items-center gap-1 font-bold text-stone-800">
+                      <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                      <span>{item.rating || 4.9}</span>
+                      <span className="text-[10px] text-stone-400 font-normal">({item.numReviews || 24})</span>
+                    </div>
+                  </td>
+                ))}
+              </tr>
+              <tr>
+                <td className="p-3 font-extrabold text-stone-700 bg-stone-50/50">Stock Status</td>
+                {compareItems.map((item) => (
+                  <td key={item._id} className="p-3">
+                    <span className={`px-2 py-0.5 rounded-md font-bold text-[10px] uppercase ${
+                      item.stockQuantity > 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+                    }`}>
+                      {item.stockQuantity > 0 ? 'In Stock' : 'Out of Stock'}
+                    </span>
+                  </td>
+                ))}
+              </tr>
+              <tr>
+                <td className="p-3 font-extrabold text-stone-700 bg-stone-50/50">Action</td>
+                {compareItems.map((item) => (
+                  <td key={item._id} className="p-3">
+                    <button
+                      onClick={() => {
+                        addToCart(item);
+                        setIsCompareOpen(false);
+                      }}
+                      className="w-full py-2 bg-amber-900 hover:bg-amber-800 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm"
+                    >
+                      <ShoppingBag className="w-3.5 h-3.5" /> Add to Cart
+                    </button>
+                  </td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
       </div>
     </div>
   );

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Sitemap: https://sl-bag-boutique.lovable.app/sitemap.xml
