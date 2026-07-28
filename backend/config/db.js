@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 let isConnected = false;
+
+const ATLAS_URI = 'mongodb+srv://gishor14_db_user:1408@cluster0.nyovru8.mongodb.net/cloth_shop_db?retryWrites=true&w=majority&appName=Cluster0';
 
 const connectDB = async () => {
   if (isConnected || mongoose.connection.readyState >= 1) {
@@ -8,13 +13,13 @@ const connectDB = async () => {
   }
 
   try {
-    const uri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/cloth_shop_db';
+    const uri = process.env.MONGODB_URI || ATLAS_URI;
     
     const conn = await mongoose.connect(uri, {
       dbName: 'cloth_shop_db',
       serverSelectionTimeoutMS: 10000,
       socketTimeoutMS: 45000,
-      family: 4, // Use IPv4, avoids IPv6 ECONNRESET issues on some serverless hosts
+      family: 4,
     });
 
     isConnected = true;

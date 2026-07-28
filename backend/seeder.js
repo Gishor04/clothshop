@@ -8,6 +8,8 @@ const User = require('./models/User');
 const Product = require('./models/Product');
 const Order = require('./models/Order');
 
+const ATLAS_URI = 'mongodb+srv://gishor14_db_user:1408@cluster0.nyovru8.mongodb.net/cloth_shop_db?retryWrites=true&w=majority&appName=Cluster0';
+
 const sampleProducts = [
   // 1. ADULT MEN
   {
@@ -199,7 +201,7 @@ const sampleProducts = [
 
 const seedData = async () => {
   try {
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/cloth_shop_db';
+    const mongoUri = process.env.MONGODB_URI || ATLAS_URI;
     
     await mongoose.connect(mongoUri, { dbName: 'cloth_shop_db' });
     console.log('Connected to MongoDB for seeding Clothing Store...');
