@@ -5,55 +5,96 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { protect, admin } = require('../middleware/auth');
 
+// Fast JWT generator
 const generateToken = (id) =>
-  jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
+  jwt.sign({ id }, process.env.JWT_SECRET || 'cloth_shop_super_secret_jwt_key_2026', { expiresIn: '30d' });
 
 // @route   POST /api/auth/register
+// @desc    High-speed customer / admin registration
 router.post('/register', async (req, res) => {
   try {
     const { name, email, password, phone, role } = req.body;
-    const exists = await User.findOne({ email });
+    
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'Name, email, and password are required' });
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+
+    // Fast indexed check using .lean()
+    const exists = await User.findOne({ email: normalizedEmail }).select('_id').lean();
     if (exists) return res.status(400).json({ message: 'User already exists with this email' });
 
-    const user = await User.create({ name, email, password, phone, role: role || 'customer' });
+    // Create user (password automatically hashed with fast 8 rounds in pre-save hook)
+    const user = await User.create({
+      name: name.trim(),
+      email: normalizedEmail,
+      password,
+      phone: phone ? phone.trim() : '',
+      role: role || 'customer',
+    });
+
+    const token = generateToken(user._id);
+
     res.status(201).json({
-      _id: user._id, name: user.name, email: user.email,
-      role: user.role, token: generateToken(user._id),
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      address: user.address,
+      role: user.role,
+      token,
     });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: err.message || 'Registration failed' });
   }
 });
 
 // @route   POST /api/auth/login
+// @desc    High-speed login authentication
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email and password are required' });
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+
+    // Fast user lookup
+    const user = await User.findOne({ email: normalizedEmail });
     if (!user) return res.status(401).json({ message: 'Invalid email or password' });
     if (user.isBlocked) return res.status(403).json({ message: 'Your account has been suspended. Contact support.' });
 
+    // Fast password verification
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(401).json({ message: 'Invalid email or password' });
 
-    // Update last login
-    user.lastLogin = new Date();
-    await user.save({ validateBeforeSave: false });
+    const token = generateToken(user._id);
 
+    // Non-blocking background update of lastLogin timestamp
+    User.updateOne({ _id: user._id }, { $set: { lastLogin: new Date() } }).exec().catch(() => {});
+
+    // Instant response return
     res.json({
-      _id: user._id, name: user.name, email: user.email,
-      phone: user.phone, address: user.address,
-      role: user.role, token: generateToken(user._id),
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      address: user.address,
+      role: user.role,
+      token,
     });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: err.message || 'Login failed' });
   }
 });
 
 // @route   GET /api/auth/profile
 router.get('/profile', protect, async (req, res) => {
   try {
-    const user = await User.findById(req.user._id).select('-password');
+    const user = await User.findById(req.user._id).select('-password').lean();
     if (!user) return res.status(404).json({ message: 'User not found' });
     res.json(user);
   } catch (err) {
@@ -73,8 +114,12 @@ router.put('/profile', protect, async (req, res) => {
     if (password) user.password = password;
     const updated = await user.save();
     res.json({
-      _id: updated._id, name: updated.name, email: updated.email,
-      phone: updated.phone, address: updated.address, role: updated.role,
+      _id: updated._id,
+      name: updated.name,
+      email: updated.email,
+      phone: updated.phone,
+      address: updated.address,
+      role: updated.role,
       token: generateToken(updated._id),
     });
   } catch (err) {
@@ -83,7 +128,6 @@ router.put('/profile', protect, async (req, res) => {
 });
 
 // @route   GET /api/auth/customers
-// @desc    Admin: list all customers
 router.get('/customers', protect, admin, async (req, res) => {
   try {
     const { search, page = 1, limit = 20 } = req.query;
@@ -98,9 +142,9 @@ router.get('/customers', protect, admin, async (req, res) => {
       .select('-password')
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
-      .limit(Number(limit));
+      .limit(Number(limit))
+      .lean();
 
-    // Attach order count for each customer
     const Order = require('../models/Order');
     const customersWithOrders = await Promise.all(
       customers.map(async (c) => {
@@ -110,7 +154,7 @@ router.get('/customers', protect, admin, async (req, res) => {
           { $group: { _id: null, total: { $sum: '$totalAmount' } } },
         ]);
         return {
-          ...c.toObject(),
+          ...c,
           orderCount,
           totalSpent: revenue[0]?.total || 0,
         };
@@ -124,7 +168,6 @@ router.get('/customers', protect, admin, async (req, res) => {
 });
 
 // @route   PUT /api/auth/customers/:id/block
-// @desc    Admin: toggle block/unblock customer
 router.put('/customers/:id/block', protect, admin, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -139,11 +182,10 @@ router.put('/customers/:id/block', protect, admin, async (req, res) => {
 });
 
 // @route   GET /api/auth/customers/:id/orders
-// @desc    Admin: get a specific customer's orders
 router.get('/customers/:id/orders', protect, admin, async (req, res) => {
   try {
     const Order = require('../models/Order');
-    const orders = await Order.find({ userId: req.params.id }).sort({ createdAt: -1 });
+    const orders = await Order.find({ userId: req.params.id }).sort({ createdAt: -1 }).lean();
     res.json(orders);
   } catch (err) {
     res.status(500).json({ message: err.message });

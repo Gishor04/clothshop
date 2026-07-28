@@ -17,8 +17,10 @@ const connectDB = async () => {
     
     const conn = await mongoose.connect(uri, {
       dbName: 'cloth_shop_db',
-      serverSelectionTimeoutMS: 10000,
-      socketTimeoutMS: 45000,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 30000,
+      maxPoolSize: 10,
+      minPoolSize: 2,
       family: 4,
     });
 

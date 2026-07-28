@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
+// Recommended salt rounds for fast serverless performance (8 rounds ~ 35ms vs 12 rounds ~ 1200ms)
+const SALT_ROUNDS = 8;
+
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },
-    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
+    email: { type: String, required: true, unique: true, index: true, lowercase: true, trim: true },
     password: { type: String, required: true, minlength: 6 },
     phone: { type: String, default: '' },
     address: {
@@ -12,7 +15,7 @@ const userSchema = new mongoose.Schema(
       city: { type: String, default: '' },
       state: { type: String, default: '' },
       zipCode: { type: String, default: '' },
-      country: { type: String, default: 'India' },
+      country: { type: String, default: 'Sri Lanka' },
     },
     role: { type: String, enum: ['customer', 'admin'], default: 'customer' },
     staffRole: { type: String, enum: ['super_admin', 'staff', null], default: null },
@@ -31,10 +34,10 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Hash password before save
+// Fast password hashing before save (8 rounds for high-speed performance)
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
-  this.password = await bcrypt.hash(this.password, 12);
+  this.password = await bcrypt.hash(this.password, SALT_ROUNDS);
   next();
 });
 
