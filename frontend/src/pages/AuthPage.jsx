@@ -1,16 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { SEO } from '../components/SEO';
-import { SeoMeta } from '../components/SeoMeta';
 import { Lock, Mail, User, Phone } from 'lucide-react';
 
 export const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const { login, register, error, setError } = useAuth();
+  const { user, login, register, error, setError } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get('redirect') || '';
+
+  // Auto-redirect if already authenticated
+  useEffect(() => {
+    if (user) {
+      if (redirect) navigate(`/${redirect}`, { replace: true });
+      else if (user.role === 'admin') navigate('/admin', { replace: true });
+      else navigate('/', { replace: true });
+    }
+  }, [user, redirect, navigate]);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -27,18 +35,18 @@ export const AuthPage = () => {
     setError(null);
     setLoading(true);
 
-    let res;
     try {
+      let authUser;
       if (isLogin) {
-        res = await login(formData.email, formData.password);
+        authUser = await login(formData.email, formData.password);
       } else {
-        res = await register(formData.name, formData.email, formData.password, formData.phone, formData.role);
+        authUser = await register(formData.name, formData.email, formData.password, formData.phone, formData.role);
       }
 
-      if (res?.success) {
-        if (redirect) navigate(`/${redirect}`);
-        else if (res.user?.role === 'admin') navigate('/admin');
-        else navigate('/');
+      if (authUser) {
+        if (redirect) navigate(`/${redirect}`, { replace: true });
+        else if (authUser.role === 'admin') navigate('/admin', { replace: true });
+        else navigate('/', { replace: true });
       }
     } catch (err) {
       console.error(err);
