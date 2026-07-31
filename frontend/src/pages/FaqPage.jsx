@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { SeoMeta } from '../components/SeoMeta';
+import { SEO } from '../components/SEO';
+import { generateFaqSchema } from '../utils/seoHelpers';
 import { ChevronDown, Search, HelpCircle, Phone } from 'lucide-react';
 
 export const FaqPage = () => {
@@ -9,27 +10,27 @@ export const FaqPage = () => {
   const faqs = [
     {
       q: 'How does Cash on Delivery (COD) work across Sri Lanka?',
-      a: 'We offer Cash on Delivery (COD) island-wide. When our courier delivers your package to your doorstep, you simply pay the total cash amount. No credit card or online payment is required in advance.',
+      a: 'We offer Cash on Delivery (COD) island-wide. When our courier delivers your clothing package to your doorstep, you simply pay the total cash amount. No credit card or online payment is required in advance.',
     },
     {
       q: 'What is the standard delivery timeframe?',
-      a: 'Delivery takes 1-2 business days within Colombo and Gampaha districts, and 2-3 business days for all other districts across Sri Lanka (Kandy, Galle, Jaffna, Matara, etc.). Express Next-Day Delivery is available for Colombo 01-15.',
+      a: 'Delivery takes 1-2 business days within Colombo and Jaffna districts, and 2-3 business days for all other districts across Sri Lanka. Express delivery is available.',
     },
     {
       q: 'Is shipping free for orders over Rs. 10,000?',
-      a: 'Yes! All orders with a total value of Rs. 10,000 or more qualify for FREE island-wide standard delivery.',
+      a: 'Yes! All clothing orders with a total value of Rs. 10,000 or more qualify for FREE island-wide standard delivery.',
     },
     {
-      q: 'Are Kottuba bags made from genuine real leather?',
-      a: 'Yes, 100%. All our flagship bags are crafted from premium top-grain or full-grain bovine leather sourced ethically. We do not use cheap bonded or PU synthetic leather for our core collection.',
+      q: 'What sizes are available for Adult Men & Adult Women?',
+      a: 'Adult Men and Adult Women clothing are available in standard sizes: M, L, XL, and XXL. Please check our interactive Size Guide for exact chest, waist, and length measurements.',
     },
     {
       q: 'What is your 14-day Return & Exchange policy?',
-      a: 'If you wish to exchange your bag for a different color or model, simply contact us within 14 days of receiving your package. Provided the item is unused with original tags intact, we will arrange a complimentary pickup and swap.',
+      a: 'If you wish to exchange your apparel item for a different size or color, simply contact us within 14 days of receiving your package. Provided the item is unused with original tags intact, we will arrange an exchange.',
     },
     {
-      q: 'How do I care for and clean my leather bag?',
-      a: 'Wipe off dust with a soft micro-fiber cloth. Apply natural mink oil or beeswax leather balm twice a year to keep the leather hydrated and water-repellent.',
+      q: 'How do I care for and wash my 100% cotton apparel?',
+      a: 'Machine wash cold with like colors using a mild detergent. Tumble dry low or line dry in shade to maintain fabric texture and color brightness.',
     },
   ];
 
@@ -41,9 +42,10 @@ export const FaqPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8 font-['Plus_Jakarta_Sans',sans-serif]">
-      <SeoMeta
-        title="Frequently Asked Questions (FAQ) — Kottuba Sri Lanka"
-        description="Find answers to common questions about Kottuba handcrafted leather bags, island-wide Cash on Delivery, shipping, and leather care."
+      <SEO
+        title="Frequently Asked Questions (FAQ) — Delivery, COD & Sizing"
+        description="Got questions about sizing (M-XXL), island-wide Cash on Delivery (COD), shipping, or returns? Find answers to FAQs at Kaithady Boutique."
+        schema={generateFaqSchema(faqs)}
       />
 
       <div className="text-center space-y-2">

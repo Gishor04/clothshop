@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { SeoMeta } from '../components/SeoMeta';
+import { SEO } from '../components/SEO';
 import {
   ShoppingBag,
   Trash2,
@@ -23,31 +23,34 @@ export const CartPage = () => {
     saveForLaterItem,
     moveToCartFromSaved,
     cartSubtotal,
+    deliveryFee,
     discountAmount,
-    estimatedShipping,
-    cartTotal,
     couponCode,
-    appliedCoupon,
     applyCoupon,
     removeCoupon,
+    cartTotal,
   } = useCart();
 
-  const [couponInput, setCouponInput] = useState('');
+  const [inputCoupon, setInputCoupon] = useState('');
+  const [couponError, setCouponError] = useState('');
   const [district, setDistrict] = useState('Colombo');
 
   const handleApplyCoupon = (e) => {
     e.preventDefault();
-    if (couponInput.trim()) {
-      applyCoupon(couponInput);
-      setCouponInput('');
+    setCouponError('');
+    if (!inputCoupon.trim()) return;
+    const res = applyCoupon(inputCoupon);
+    if (!res.success) {
+      setCouponError(res.message);
     }
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 font-['Plus_Jakarta_Sans',sans-serif]">
-      <SeoMeta
-        title="Your Shopping Cart — Kottuba Handcrafted Leather Bags"
-        description="Review your selected Kottuba handcrafted leather bags, apply coupons, calculate Sri Lanka shipping, and proceed to secure checkout."
+      <SEO
+        title="Your Shopping Cart & Order Summary"
+        description="Review your selected clothing items, apply promo codes, and proceed to checkout."
+        robots="noindex, follow"
       />
 
       {/* Page Header */}

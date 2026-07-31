@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { SeoMeta } from '../components/SeoMeta';
+import { SEO } from '../components/SEO';
 import {
   ShieldCheck,
   Truck,
@@ -100,19 +100,19 @@ export const CheckoutPage = () => {
   if (orderConfirmed) {
     return (
       <div className="max-w-3xl mx-auto px-4 py-16 text-center space-y-6 font-['Plus_Jakarta_Sans',sans-serif]">
-        <SeoMeta title="Order Confirmed — Kottuba Leather Sri Lanka" />
+        <SEO title="Order Confirmed" robots="noindex, nofollow" />
 
         <div className="w-20 h-20 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-md">
           <CheckCircle className="w-10 h-10" />
         </div>
 
         <div className="space-y-2">
-          <span className="px-3.5 py-1 bg-amber-100 text-amber-900 rounded-full text-xs font-black uppercase tracking-wider">
+          <span className="px-3.5 py-1 bg-indigo-100 text-indigo-900 rounded-full text-xs font-black uppercase tracking-wider">
             Order ID: {orderConfirmed.orderId}
           </span>
           <h1 className="text-3xl sm:text-4xl font-black text-stone-900">Thank You for Your Order!</h1>
           <p className="text-xs sm:text-sm text-stone-600 max-w-md mx-auto">
-            Your handcrafted Kottuba leather bag order has been received. Our Colombo dispatch team will contact you shortly via SMS / phone to verify delivery.
+            Your Kaithady clothing order has been received. Our dispatch team will contact you shortly via SMS / phone to verify delivery.
           </p>
         </div>
 
@@ -123,19 +123,19 @@ export const CheckoutPage = () => {
           <div className="space-y-1 text-stone-600 font-semibold">
             <p><span className="text-stone-400">Recipient:</span> {orderConfirmed.shippingAddress.name} ({orderConfirmed.shippingAddress.phone})</p>
             <p><span className="text-stone-400">Address:</span> {orderConfirmed.shippingAddress.street}, {orderConfirmed.shippingAddress.city}, {orderConfirmed.shippingAddress.district}</p>
-            <p><span className="text-stone-400">Payment:</span> <span className="uppercase text-amber-900 font-black">{orderConfirmed.paymentMethod}</span></p>
+            <p><span className="text-stone-400">Payment:</span> <span className="uppercase text-indigo-900 font-black">{orderConfirmed.paymentMethod}</span></p>
           </div>
 
           <div className="border-t pt-3 flex justify-between font-black text-stone-900 text-sm">
             <span>Total Payable</span>
-            <span className="text-amber-900">Rs. {orderConfirmed.totalAmount.toLocaleString('en-US')}.00</span>
+            <span className="text-indigo-900">Rs. {orderConfirmed.totalAmount.toLocaleString('en-US')}.00</span>
           </div>
         </div>
 
         <div className="pt-4 flex justify-center gap-4">
           <Link
             to="/products"
-            className="px-8 py-3.5 bg-amber-900 text-white font-bold text-xs rounded-2xl shadow-md hover:bg-amber-800 transition-all uppercase"
+            className="px-8 py-3.5 bg-indigo-600 text-white font-bold text-xs rounded-2xl shadow-md hover:bg-indigo-500 transition-all uppercase"
           >
             Continue Shopping Catalog
           </Link>
@@ -146,9 +146,10 @@ export const CheckoutPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 font-['Plus_Jakarta_Sans',sans-serif]">
-      <SeoMeta
-        title="Secure Checkout — Kottuba Sri Lanka"
-        description="Complete your order for handcrafted Sri Lankan leather bags with Cash on Delivery or Card payment."
+      <SEO
+        title="Secure Checkout"
+        description="Complete your clothing order with Cash on Delivery or Card payment."
+        robots="noindex, nofollow"
       />
 
       <div className="flex items-center justify-between border-b border-stone-200 pb-4">

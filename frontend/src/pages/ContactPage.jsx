@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { SeoMeta } from '../components/SeoMeta';
+import { SEO } from '../components/SEO';
+import { generateOrganizationSchema } from '../utils/seoHelpers';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle, MessageSquare } from 'lucide-react';
 
 export const ContactPage = () => {
@@ -17,20 +18,21 @@ export const ContactPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12 font-['Plus_Jakarta_Sans',sans-serif]">
-      <SeoMeta
-        title="Contact Us & Store Locator — Kottuba Leather Sri Lanka"
-        description="Visit our flagship boutique in Colombo 03 or contact our customer support team for inquiries, custom orders, or order tracking."
+      <SEO
+        title="Contact Us & Customer Support"
+        description="Get in touch with Kaithady Clothing Boutique. Contact customer support for sizing guidance, order tracking, and delivery inquiries."
+        schema={generateOrganizationSchema()}
       />
 
       <div className="text-center max-w-2xl mx-auto space-y-2">
-        <span className="text-amber-800 font-extrabold text-xs uppercase tracking-widest">
-          Get in Touch with Kottuba
+        <span className="text-indigo-600 font-extrabold text-xs uppercase tracking-widest">
+          Get in Touch with Kaithady Boutique
         </span>
         <h1 className="text-3xl sm:text-4xl font-black text-stone-900 tracking-tight">
           We’d Love to Hear From You
         </h1>
         <p className="text-xs sm:text-sm text-stone-500 font-medium">
-          Have a question about leather care, custom embossing, or order delivery? Reach out to our Colombo workshop team.
+          Have a question about fabric details, adult & kids sizing, or order delivery? Reach out to our Kaithady support team.
         </p>
       </div>
 

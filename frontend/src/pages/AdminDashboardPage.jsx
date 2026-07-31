@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth, authFetch } from '../context/AuthContext';
+import { SEO } from '../components/SEO';
 import {
   LayoutDashboard, Package, ShoppingBag, Users, Layers,
   Tag, Image, Star, Settings, LogOut, Menu, X, TrendingUp,
@@ -1260,6 +1261,7 @@ export const AdminDashboardPage = () => {
 
   return (
     <div className="flex min-h-screen bg-slate-50">
+      <SEO title="Admin Control Panel" robots="noindex, nofollow" />
       {/* Desktop Sidebar */}
       <Sidebar />
 

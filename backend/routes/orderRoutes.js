@@ -75,9 +75,9 @@ router.get('/all', protect, admin, async (req, res) => {
   }
 });
 
-// @route   GET /api/orders/my
+// @route   GET /api/orders/my OR /api/orders/my-orders
 // @desc    User: get own orders
-router.get('/my', protect, async (req, res) => {
+router.get(['/my', '/my-orders'], protect, async (req, res) => {
   try {
     const orders = await Order.find({ userId: req.user._id }).sort({ createdAt: -1 });
     res.json(orders);

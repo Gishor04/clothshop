@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ProductCard } from '../components/ProductCard';
 import { SizeGuideModal } from '../components/SizeGuideModal';
-import { SeoMeta } from '../components/SeoMeta';
+import { SEO } from '../components/SEO';
+import { generateOrganizationSchema, generateWebSiteSchema } from '../utils/seoHelpers';
 import { MOCK_PRODUCTS } from '../data/mockProducts';
 import {
   ArrowRight,
@@ -91,9 +92,10 @@ export const HomePage = () => {
 
   return (
     <div className="space-y-16 sm:space-y-24 pb-16 font-['Plus_Jakarta_Sans',sans-serif]">
-      <SeoMeta
-        title="StyleVerse — Adult Men (M-XXL), Adult Women (M-XXL), Child Men & Child Women Clothes"
-        description="Shop premium clothing for Adult Men, Adult Women, Child Men (Boys), and Child Women (Girls). Adult sizes: M, L, XL, XXL. Free island-wide shipping over Rs. 10,000."
+      <SEO
+        title="Kaithady Clothing Boutique — Adults (M-XXL) & Kids Fashion"
+        description="Shop premium clothing for Adult Men (M-XXL), Adult Women (M-XXL), Boys, and Girls at Kaithady Boutique. Enjoy free island-wide delivery and Cash on Delivery."
+        schema={[generateOrganizationSchema(), generateWebSiteSchema()]}
       />
 
       {/* 1. Hero Lifestyle Banner Section */}

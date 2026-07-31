@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { SeoMeta } from '../components/SeoMeta';
+import { SEO } from '../components/SEO';
 import { Package, Clock, CheckCircle2, Truck, ShoppingBag } from 'lucide-react';
 
 export const OrderHistoryPage = () => {
@@ -43,7 +43,7 @@ export const OrderHistoryPage = () => {
       case 'processing':
         return <span className="px-3 py-1 bg-amber-100 text-amber-900 rounded-full text-[11px] font-extrabold flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> Processing</span>;
       default:
-        return <span className="px-3 py-1 bg-amber-100 text-amber-900 rounded-full text-[11px] font-extrabold flex items-center gap-1"><Package className="w-3.5 h-3.5" /> Order Placed</span>;
+        return <span className="px-3 py-1 bg-stone-100 text-stone-800 rounded-full text-[11px] font-extrabold capitalize">{status}</span>;
     }
   };
 
@@ -59,19 +59,17 @@ export const OrderHistoryPage = () => {
   if (orders.length === 0) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-20 text-center space-y-4 font-['Plus_Jakarta_Sans',sans-serif]">
-        <SeoMeta title="My Bag Orders — Kottuba Sri Lanka" />
+        <SEO title="My Orders & Delivery History" robots="noindex, follow" />
         <div className="w-16 h-16 bg-stone-100 rounded-full flex items-center justify-center mx-auto text-stone-400">
           <Package className="w-8 h-8" />
         </div>
-        <h2 className="text-2xl font-black text-stone-900">No Orders Found</h2>
-        <p className="text-xs text-stone-500 max-w-sm mx-auto">
-          You haven't placed any Kottuba orders yet. Explore our Sri Lanka leather collection to find your next bag!
-        </p>
+        <h2 className="text-xl font-black text-stone-900">No Orders Found</h2>
+        <p className="text-xs text-stone-500">You haven't placed any clothing orders yet.</p>
         <Link
           to="/products"
-          className="inline-block px-6 py-3 rounded-2xl bg-amber-900 text-white font-bold text-xs shadow-md"
+          className="inline-block px-6 py-3 bg-stone-900 text-white text-xs font-bold rounded-2xl hover:bg-stone-800 transition-all"
         >
-          Explore Bag Catalog
+          Explore Clothing Catalog
         </Link>
       </div>
     );
@@ -79,11 +77,11 @@ export const OrderHistoryPage = () => {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 font-['Plus_Jakarta_Sans',sans-serif]">
-      <SeoMeta title="My Orders & Delivery History — Kottuba Sri Lanka" />
+      <SEO title="My Orders & Delivery History" robots="noindex, follow" />
 
       <div>
-        <h1 className="text-2xl sm:text-3xl font-black text-stone-900">My Kottuba Order History</h1>
-        <p className="text-xs text-stone-500 mt-1">Track status and view details of your handcrafted bag purchases</p>
+        <h1 className="text-2xl sm:text-3xl font-black text-stone-900">My Order History</h1>
+        <p className="text-xs text-stone-500 mt-1">Track status and view details of your clothing purchases</p>
       </div>
 
       <div className="space-y-6">

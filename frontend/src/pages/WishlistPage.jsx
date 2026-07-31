@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useWishlist } from '../context/WishlistContext';
 import { ProductCard } from '../components/ProductCard';
-import { SeoMeta } from '../components/SeoMeta';
+import { SEO } from '../components/SEO';
 import { Heart, ShoppingBag, Trash2 } from 'lucide-react';
 
 export const WishlistPage = () => {
@@ -10,17 +10,18 @@ export const WishlistPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 font-['Plus_Jakarta_Sans',sans-serif]">
-      <SeoMeta
-        title="Your Saved Wishlist — Kottuba Leather Sri Lanka"
-        description="View your saved Kottuba handcrafted leather bags and accessories."
+      <SEO
+        title="Your Saved Wishlist"
+        description="View your saved apparel and clothing items at Kaithady Boutique."
+        robots="noindex, follow"
       />
 
       <div className="border-b border-stone-200 pb-4 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-black text-stone-900 tracking-tight flex items-center gap-2">
-            <Heart className="w-7 h-7 text-rose-600 fill-rose-600" /> Saved Bags Wishlist
+            <Heart className="w-7 h-7 text-rose-600 fill-rose-600" /> Saved Clothing Wishlist
           </h1>
-          <p className="text-xs text-stone-500 mt-1">Keep track of your favorite Kottuba carry-wear styles.</p>
+          <p className="text-xs text-stone-500 mt-1">Keep track of your favorite Kaithady apparel items.</p>
         </div>
 
         <span className="px-3.5 py-1 bg-stone-100 text-stone-800 rounded-full text-xs font-bold">

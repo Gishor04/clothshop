@@ -4,7 +4,8 @@ import { ProductCard } from '../components/ProductCard';
 import { CompareBar } from '../components/CompareBar';
 import { CompareModal } from '../components/CompareModal';
 import { SizeGuideModal } from '../components/SizeGuideModal';
-import { SeoMeta } from '../components/SeoMeta';
+import { SEO } from '../components/SEO';
+import { generateBreadcrumbSchema } from '../utils/seoHelpers';
 import { MOCK_PRODUCTS, MOCK_CATEGORIES, ADULT_SIZES } from '../data/mockProducts';
 import { Filter, X, SlidersHorizontal, Search, RefreshCw, Ruler } from 'lucide-react';
 
@@ -137,7 +138,7 @@ export const ProductListPage = () => {
   };
 
   const hasActiveFilters =
-    searchTerm ||
+    Boolean(searchTerm) ||
     selectedCategory !== 'all' ||
     selectedSize !== 'all' ||
     selectedBrand !== 'all' ||
@@ -145,11 +146,30 @@ export const ProductListPage = () => {
     onlyInStock ||
     onlyOnSale;
 
+  const categoryTitleMap = {
+    men: "Adult Men's Collection (M-XXL)",
+    women: "Adult Women's Collection (M-XXL)",
+    boys: "Boys' Fashion Collection (Child)",
+    girls: "Girls' Fashion Collection (Child)",
+    all: 'Clothing Catalog'
+  };
+
+  const dynamicTitle = categoryTitleMap[selectedCategory] || 'Clothing Catalog';
+
+  const breadcrumbs = [
+    { name: 'Home', url: '/' },
+    { name: 'Products', url: '/products' },
+  ];
+  if (selectedCategory !== 'all') {
+    breadcrumbs.push({ name: dynamicTitle, url: `/products?category=${selectedCategory}` });
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 font-['Plus_Jakarta_Sans',sans-serif]">
-      <SeoMeta
-        title="Apparel Catalog — Adult Men (M-XXL), Adult Women (M-XXL), Child Men & Child Women"
-        description="Browse premium clothing for Adult Men, Adult Women, Child Men (Boys), and Child Women (Girls). Adult sizes: M, L, XL, XXL."
+      <SEO
+        title={dynamicTitle}
+        description={`Explore Kaithady Boutique's ${dynamicTitle}. Premium fabrics, accurate sizes (M-XXL for Adults), island-wide delivery and COD.`}
+        schema={generateBreadcrumbSchema(breadcrumbs)}
       />
 
       {/* Header Banner */}

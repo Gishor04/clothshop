@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { SEO } from '../components/SEO';
 import { SeoMeta } from '../components/SeoMeta';
 import { Lock, Mail, User, Phone } from 'lucide-react';
 
@@ -23,16 +24,22 @@ export const AuthPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
     setLoading(true);
 
+    let res;
     try {
       if (isLogin) {
-        await login(formData.email, formData.password);
+        res = await login(formData.email, formData.password);
       } else {
-        await register(formData.name, formData.email, formData.password, formData.phone, formData.role);
+        res = await register(formData.name, formData.email, formData.password, formData.phone, formData.role);
       }
 
-      navigate(redirect ? `/${redirect}` : '/');
+      if (res?.success) {
+        if (redirect) navigate(`/${redirect}`);
+        else if (res.user?.role === 'admin') navigate('/admin');
+        else navigate('/');
+      }
     } catch (err) {
       console.error(err);
     } finally {
@@ -41,10 +48,14 @@ export const AuthPage = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto my-12 px-4 font-['Plus_Jakarta_Sans',sans-serif]">
-      <SeoMeta title="Sign In or Register — Kaithady Clothing Boutique" />
+    <div className="min-h-[75vh] flex items-center justify-center px-4 py-12 font-['Plus_Jakarta_Sans',sans-serif]">
+      <SEO
+        title={isLogin ? 'Customer Sign In' : 'Create Account'}
+        description="Sign in or register for an account at Kaithady Clothing Boutique."
+        robots="noindex, follow"
+      />
 
-      <div className="bg-white rounded-3xl p-8 border border-stone-200 shadow-xl space-y-6">
+      <div className="bg-white rounded-3xl p-8 border border-stone-200 shadow-xl space-y-6 w-full max-w-md">
         
         {/* Header Logo & Title */}
         <div className="text-center space-y-2">

@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 Disallow: /admin
-Sitemap: https://sl-bag-boutique.lovable.app/sitemap.xml
+Disallow: /checkout
+Disallow: /cart
+Disallow: /auth
+
+Sitemap: https://kaithadyclothing.com/sitemap.xml

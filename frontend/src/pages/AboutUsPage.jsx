@@ -1,26 +1,28 @@
 import React from 'react';
-import { SeoMeta } from '../components/SeoMeta';
+import { SEO } from '../components/SEO';
+import { generateOrganizationSchema } from '../utils/seoHelpers';
 import { Link } from 'react-router-dom';
 import { Award, ShieldCheck, Heart, Sparkles, ArrowRight } from 'lucide-react';
 
 export const AboutUsPage = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16 font-['Plus_Jakarta_Sans',sans-serif]">
-      <SeoMeta
-        title="Our Heritage & Craftsmanship — Kottuba Sri Lanka"
-        description="Learn about Kottuba's journey of crafting premium handcrafted full-grain leather bags in Colombo since 2018."
+      <SEO
+        title="About Our Boutique & Craftsmanship"
+        description="Learn about Kaithady Clothing Boutique's journey of delivering premium fashion for Adults (M-XXL) and Kids across Sri Lanka."
+        schema={generateOrganizationSchema()}
       />
 
       {/* Hero Banner */}
       <div className="relative rounded-3xl overflow-hidden bg-stone-950 text-white p-8 sm:p-16 shadow-2xl border border-stone-800 flex flex-col items-center text-center space-y-4">
-        <span className="px-4 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30 text-xs font-black uppercase tracking-widest">
-          Est. 2018 · Colombo, Sri Lanka
+        <span className="px-4 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 text-xs font-black uppercase tracking-widest">
+          Est. Kaithady · Sri Lanka
         </span>
-        <h1 className="text-4xl sm:text-6xl font-black text-amber-100 tracking-tight leading-tight max-w-3xl">
-          Crafting Premium Carry-Wear Across the Pearl
+        <h1 className="text-4xl sm:text-6xl font-black text-white tracking-tight leading-tight max-w-3xl">
+          Crafting Everyday Elegance For Everyone
         </h1>
         <p className="text-stone-300 text-xs sm:text-sm max-w-xl font-medium leading-relaxed">
-          Kottuba was founded with a singular purpose: to bring world-class, handcrafted full-grain leather bags to Sri Lanka and the world, built to endure a lifetime of journeys.
+          Kaithady Clothing Boutique was founded with a singular purpose: to deliver premium quality apparel for Adult Men (M-XXL), Adult Women (M-XXL), Boys, and Girls with uncompromised comfort and durability.
         </p>
       </div>
 

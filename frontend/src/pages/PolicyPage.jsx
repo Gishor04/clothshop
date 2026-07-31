@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SeoMeta } from '../components/SeoMeta';
+import { SEO } from '../components/SEO';
 import { ShieldCheck, Truck, RotateCcw, FileText } from 'lucide-react';
 
 export const PolicyPage = () => {
@@ -7,9 +7,9 @@ export const PolicyPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8 font-['Plus_Jakarta_Sans',sans-serif]">
-      <SeoMeta
-        title="Store Policies & Terms — Kottuba Sri Lanka"
-        description="Read Kottuba's official shipping, returns, exchange, privacy, and terms of service policies."
+      <SEO
+        title="Store Policies, Shipping & Returns"
+        description="Read Kaithady Clothing Boutique's official shipping, COD, returns, exchange, privacy, and warranty policies."
       />
 
       <div className="text-center space-y-2">

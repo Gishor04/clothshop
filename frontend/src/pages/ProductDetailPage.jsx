@@ -6,7 +6,8 @@ import { useCompare } from '../context/CompareContext';
 import { ProductCard } from '../components/ProductCard';
 import { ReviewsSection } from '../components/ReviewsSection';
 import { SizeGuideModal } from '../components/SizeGuideModal';
-import { SeoMeta } from '../components/SeoMeta';
+import { SEO } from '../components/SEO';
+import { generateProductSchema, generateBreadcrumbSchema, getCanonicalUrl } from '../utils/seoHelpers';
 import { MOCK_PRODUCTS } from '../data/mockProducts';
 import {
   ShoppingBag,
@@ -60,34 +61,46 @@ export const ProductDetailPage = () => {
           if (relRes.ok) {
             const relData = await relRes.json();
             const list = Array.isArray(relData) ? relData : (relData.products || []);
-            setRelatedProducts(list.filter((p) => p._id !== data._id).slice(0, 4));
+            setRelatedProducts(list.filter((p) => p._id !== id && p.category === data.category).slice(0, 4));
           }
           setLoading(false);
           return;
         }
       } catch (err) {
-        console.log('Using local clothing dataset fallback...');
+        console.log('Using local dataset fallback for product detail...');
       }
 
-      // Local fallback
-      const found = MOCK_PRODUCTS.find((p) => p._id === id) || MOCK_PRODUCTS[0];
-      setProduct(found);
-      setSelectedImage(found.images?.[0] || FALLBACK_IMAGE);
-      setSelectedSize(found.sizes?.[0]?.size || 'M');
-      setSelectedColor(found.colors?.[0]?.name || found.color || 'Standard');
-
-      setRelatedProducts(MOCK_PRODUCTS.filter((p) => p._id !== found._id).slice(0, 4));
+      const found = MOCK_PRODUCTS.find((p) => p._id === id);
+      if (found) {
+        setProduct(found);
+        setSelectedImage(found.images?.[0] || FALLBACK_IMAGE);
+        setSelectedSize(found.sizes?.[0]?.size || 'M');
+        setSelectedColor(found.colors?.[0]?.name || 'Standard');
+        setRelatedProducts(MOCK_PRODUCTS.filter((p) => p._id !== id && p.category === found.category).slice(0, 4));
+      }
       setLoading(false);
     };
 
     fetchProductDetails();
   }, [id]);
 
-  if (loading || !product) {
+  if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-20 text-center space-y-4 font-['Plus_Jakarta_Sans',sans-serif]">
-        <div className="w-12 h-12 rounded-full border-4 border-indigo-600 border-t-transparent animate-spin mx-auto" />
+      <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-4">
+        <div className="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
         <p className="text-xs text-stone-500 font-bold">Loading clothing details...</p>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="min-h-[50vh] flex flex-col items-center justify-center space-y-4 text-center px-4">
+        <h2 className="text-2xl font-black text-stone-800">Product Not Found</h2>
+        <p className="text-xs text-stone-500 max-w-sm">The clothing item you are searching for might be out of stock or removed.</p>
+        <Link to="/products" className="px-6 py-3 bg-stone-900 text-white text-xs font-bold rounded-2xl hover:bg-stone-800 transition-all">
+          Back to Catalog
+        </Link>
       </div>
     );
   }
@@ -100,12 +113,24 @@ export const ProductDetailPage = () => {
     addToCart(product, selectedSize, quantity);
   };
 
+  const productCanonical = getCanonicalUrl(`/product/${product._id || id}`);
+  const productSchema = generateProductSchema(product, productCanonical);
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Products', url: '/products' },
+    { name: product.category || 'Apparel', url: `/products?category=${product.category}` },
+    { name: product.name, url: `/product/${product._id || id}` },
+  ]);
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16 font-['Plus_Jakarta_Sans',sans-serif]">
-      <SeoMeta
-        title={`${product.name} — ${product.targetAudience || 'Apparel'} | StyleVerse`}
-        description={`${product.description} Fabric: ${product.fabric}. Available Adult Sizes: M, L, XL, XXL.`}
+      <SEO
+        title={product.name}
+        description={`${product.description || product.name}. Premium clothing from Kaithady Boutique. ${product.fabric ? `Fabric: ${product.fabric}.` : ''} Available in Adult & Kids sizes.`}
+        canonicalUrl={productCanonical}
+        ogType="product"
         ogImage={selectedImage || images[0]}
+        schema={[productSchema, breadcrumbSchema]}
       />
 
       {/* Breadcrumb Navigation */}
