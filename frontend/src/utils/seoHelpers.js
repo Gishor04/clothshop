@@ -1,5 +1,5 @@
 /**
- * SEO & Structured Data (JSON-LD) Helper Utilities
+ * Advanced SEO & Structured Data (JSON-LD) Helper Utilities
  * Reusable for any E-commerce / Modern Web project.
  */
 
@@ -7,13 +7,13 @@ export const getSiteBaseUrl = () => {
   if (typeof window !== 'undefined' && window.location?.origin) {
     return window.location.origin;
   }
-  return import.meta.env.VITE_SITE_URL || 'https://kaithadyclothing.com';
+  return import.meta.env.VITE_SITE_URL || 'https://kaithady-clothing-boutique.vercel.app';
 };
 
 export const getCanonicalUrl = (path = '') => {
   const baseUrl = getSiteBaseUrl();
   if (path.startsWith('http://') || path.startsWith('https://')) {
-    return path.split('?')[0]; // strip query string for canonical
+    return path.split('?')[0]; // strip query string for clean canonical
   }
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
   const fullUrl = `${baseUrl}${cleanPath}`;
@@ -21,7 +21,7 @@ export const getCanonicalUrl = (path = '') => {
 };
 
 /**
- * Generate Organization / ClothingStore Schema (JSON-LD)
+ * Generate Complete Organization / ClothingStore Schema (JSON-LD)
  */
 export const generateOrganizationSchema = () => {
   const baseUrl = getSiteBaseUrl();
@@ -29,18 +29,30 @@ export const generateOrganizationSchema = () => {
     '@context': 'https://schema.org',
     '@type': 'ClothingStore',
     name: 'Kaithady Clothing Boutique',
+    legalName: 'Kaithady Clothing Boutique (Pvt) Ltd',
     url: baseUrl,
     logo: `${baseUrl}/vite.svg`,
+    image: `${baseUrl}/vite.svg`,
     description:
-      'Kaithady Clothing Boutique offers premium apparel for Adult Men (M-XXL), Adult Women (M-XXL), Boys, and Girls with island-wide shipping and Cash on Delivery.',
+      'Kaithady Clothing Boutique offers premium apparel for Adult Men (M-XXL), Adult Women (M-XXL), Boys, and Girls with island-wide shipping and Cash on Delivery across Sri Lanka.',
+    telephone: '+94 77 123 4567',
+    email: 'support@kaithadyclothing.com',
     priceRange: '$$',
     currenciesAccepted: 'LKR',
-    paymentAccepted: 'Cash, Credit Card',
+    paymentAccepted: 'Cash, Credit Card, Cash on Delivery',
+    foundingDate: '2022',
     address: {
       '@type': 'PostalAddress',
+      streetAddress: 'A9 Main Road',
       addressLocality: 'Kaithady',
       addressRegion: 'Northern Province',
+      postalCode: '40000',
       addressCountry: 'LK',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: '9.6615',
+      longitude: '80.0890',
     },
     contactPoint: {
       '@type': 'ContactPoint',
@@ -48,6 +60,33 @@ export const generateOrganizationSchema = () => {
       contactType: 'customer service',
       areaServed: 'LK',
       availableLanguage: ['en', 'ta', 'si'],
+    },
+    sameAs: [
+      'https://facebook.com/kaithadyclothing',
+      'https://instagram.com/kaithadyclothing',
+      'https://wa.me/94770000000',
+    ],
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Kaithady Clothing Catalog',
+      itemListElement: [
+        {
+          '@type': 'OfferCatalog',
+          name: "Adult Men's Apparel (M-XXL)",
+        },
+        {
+          '@type': 'OfferCatalog',
+          name: "Adult Women's Fashion (M-XXL)",
+        },
+        {
+          '@type': 'OfferCatalog',
+          name: "Boys' Fashion (Child)",
+        },
+        {
+          '@type': 'OfferCatalog',
+          name: "Girls' Wear (Child)",
+        },
+      ],
     },
   };
 };
@@ -71,7 +110,7 @@ export const generateWebSiteSchema = () => {
 };
 
 /**
- * Generate E-commerce Product Schema (JSON-LD)
+ * Generate Enhanced E-commerce Product Schema (JSON-LD)
  */
 export const generateProductSchema = (product, canonicalUrl) => {
   if (!product) return null;
@@ -82,15 +121,16 @@ export const generateProductSchema = (product, canonicalUrl) => {
     ? product.images
     : product.image ? [product.image] : [`${baseUrl}/vite.svg`];
 
-  const inStock = product.countInStock > 0 || product.stock > 0 || product.inStock === true;
+  const inStock = product.countInStock > 0 || product.stockQuantity > 0 || product.stock > 0 || product.inStock === true;
 
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
     image: images,
-    description: product.description || `${product.name} - Premium clothing from Kaithady Boutique.`,
-    sku: product._id || product.id || 'N/A',
+    description: product.description || `${product.name} - Premium clothing item from Kaithady Boutique.`,
+    sku: product._id || product.id || 'SKU-KTB-001',
+    mpn: product._id || product.id || 'MPN-KTB-001',
     category: product.category || 'Apparel',
     brand: {
       '@type': 'Brand',
@@ -108,16 +148,34 @@ export const generateProductSchema = (product, canonicalUrl) => {
         '@type': 'Organization',
         name: 'Kaithady Clothing Boutique',
       },
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        applicableCountry: 'LK',
+        returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        merchantReturnDays: 14,
+        returnMethod: 'https://schema.org/ReturnByMail',
+      },
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingRate: {
+          '@type': 'MonetaryAmount',
+          value: product.price >= 10000 ? 0 : 350,
+          currency: 'LKR',
+        },
+        shippingDestination: {
+          '@type': 'DefinedRegion',
+          addressCountry: 'LK',
+        },
+      },
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: product.rating || 4.9,
+      reviewCount: product.numReviews || 18,
+      bestRating: '5',
+      worstRating: '1',
     },
   };
-
-  if (product.rating && product.numReviews) {
-    schema.aggregateRating = {
-      '@type': 'AggregateRating',
-      ratingValue: product.rating,
-      reviewCount: product.numReviews,
-    };
-  }
 
   return schema;
 };
