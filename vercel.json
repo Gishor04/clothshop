@@ -23,6 +23,14 @@
       "dest": "frontend/assets/$1"
     },
     {
+      "src": "^/wellfit-logo.jpg",
+      "dest": "frontend/wellfit-logo.jpg"
+    },
+    {
+      "src": "^/(.*\\.(?:jpg|jpeg|png|svg|ico|webp|gif|txt|xml|json))$",
+      "dest": "frontend/$1"
+    },
+    {
       "src": "^/robots.txt",
       "dest": "frontend/robots.txt"
     },
