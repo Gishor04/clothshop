@@ -296,12 +296,12 @@ export const CartPage = () => {
                 </Link>
 
                 <a
-                  href={`https://wa.me/94770000000?text=Hi%20Kottuba%2C%20I%27d%20like%20to%20place%20an%20order%20for%20items%20totaling%20Rs.%20${cartTotal}`}
+                  href={`https://wa.me/94765554150?text=Hi%20WellFIT%2C%20I%27d%20like%20to%20place%20an%20order%20for%20items%20totaling%20Rs.%20${cartTotal}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-2xl shadow-md flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold rounded-2xl shadow-md flex items-center justify-center gap-2"
                 >
-                  <Phone className="w-4 h-4" /> Fast WhatsApp Order
+                  <Phone className="w-4 h-4" /> Fast WhatsApp Order (+94 76 555 4150)
                 </a>
               </div>
 

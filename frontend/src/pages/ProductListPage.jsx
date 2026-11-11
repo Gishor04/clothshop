@@ -19,7 +19,7 @@ export const ProductListPage = () => {
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'all');
   const [selectedSize, setSelectedSize] = useState('all');
   const [selectedBrand, setSelectedBrand] = useState('all');
-  const [priceRange, setPriceRange] = useState(15000);
+  const [priceRange, setPriceRange] = useState(60000);
   const [onlyInStock, setOnlyInStock] = useState(false);
   const [onlyOnSale, setOnlyOnSale] = useState(searchParams.get('onSale') === 'true');
   const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'newest');
@@ -168,7 +168,7 @@ export const ProductListPage = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 font-['Plus_Jakarta_Sans',sans-serif]">
       <SEO
         title={dynamicTitle}
-        description={`Explore Kaithady Boutique's ${dynamicTitle}. Premium fabrics, accurate sizes (M-XXL for Adults), island-wide delivery and COD.`}
+        description={`Explore WellFIT's ${dynamicTitle}. Specialist in Wedding Suits, Bespoke Groom Tuxedos, Sherwanis, Blazers & Family Fashion. Island-wide delivery & WhatsApp orders.`}
         schema={generateBreadcrumbSchema(breadcrumbs)}
       />
 
@@ -357,15 +357,15 @@ export const ProductListPage = () => {
             <input
               type="range"
               min={3000}
-              max={20000}
-              step={500}
+              max={60000}
+              step={1000}
               value={priceRange}
               onChange={(e) => setPriceRange(Number(e.target.value))}
               className="w-full accent-indigo-600 cursor-pointer"
             />
             <div className="flex justify-between text-[10px] font-bold text-stone-400">
               <span>Rs. 3,000</span>
-              <span>Rs. 20,000</span>
+              <span>Rs. 60,000</span>
             </div>
           </div>
 

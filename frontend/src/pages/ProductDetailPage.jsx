@@ -125,8 +125,8 @@ export const ProductDetailPage = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16 font-['Plus_Jakarta_Sans',sans-serif]">
       <SEO
-        title={product.name}
-        description={`${product.description || product.name}. Premium clothing from Kaithady Boutique. ${product.fabric ? `Fabric: ${product.fabric}.` : ''} Available in Adult & Kids sizes.`}
+        title={`${product.name} — WellFIT Specialist in Wedding Suits`}
+        description={`${product.description || product.name}. Specialist in Wedding Suits & Men's Wear at WellFIT. ${product.fabric ? `Fabric: ${product.fabric}.` : ''} Available in Adult & Kids sizes.`}
         canonicalUrl={productCanonical}
         ogType="product"
         ogImage={selectedImage || images[0]}
@@ -334,12 +334,14 @@ export const ProductDetailPage = () => {
             </div>
 
             <a
-              href={`https://wa.me/94770000000?text=Hi%20StyleVerse%2C%20I%27d%20like%20to%20order%20the%20${encodeURIComponent(product.name)}%20in%20size%20${selectedSize}`}
+              href={`https://wa.me/94765554150?text=${encodeURIComponent(
+                `Hi WellFIT, I'd like to order: ${product.name} (Rs. ${(product.price || 0).toLocaleString()}) in size ${selectedSize}. Please confirm availability and delivery.`
+              )}`}
               target="_blank"
               rel="noreferrer"
-              className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl text-xs font-bold flex items-center justify-center gap-2 shadow-md transition-all"
+              className="w-full py-3.5 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-2xl text-xs font-bold flex items-center justify-center gap-2 shadow-md transition-all uppercase tracking-wider"
             >
-              <Phone className="w-4 h-4" /> Order This Outfit via WhatsApp
+              <Phone className="w-4 h-4" /> Order This Outfit via WhatsApp (+94 76 555 4150)
             </a>
           </div>
 

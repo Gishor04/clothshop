@@ -11,7 +11,99 @@ const Order = require('./models/Order');
 const ATLAS_URI = 'mongodb+srv://gishor14_db_user:1408@cluster0.nyovru8.mongodb.net/cloth_shop_db?retryWrites=true&w=majority&appName=Cluster0';
 
 const sampleProducts = [
-  // 1. ADULT MEN
+  // 1. WELLFIT WEDDING SUITS & TUXEDOS (Specialist in Wedding Suits)
+  {
+    name: 'Royal Midnight Blue Velvet 3-Piece Wedding Tuxedo',
+    description: 'WellFIT signature groom masterpiece. Luxurious micro-velvet jacket with lustrous silk peak lapel, matching single-breasted waistcoat, and precision-tailored flat-front trousers.',
+    category: 'men',
+    subCategory: 'wedding-suits',
+    targetAudience: 'Adult Men',
+    price: 38500,
+    originalPrice: 45000,
+    discount: 14,
+    images: [
+      'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=1000&auto=format&fit=crop'
+    ],
+    fabric: 'Super 140s Italian Wool & Silk Micro-Velvet',
+    fit: 'Tailored Slim Fit (Bespoke Cut)',
+    colors: [{ name: 'Royal Midnight Blue', hex: '#1E293B' }],
+    sizes: [
+      { size: 'M', stock: 12 },
+      { size: 'L', stock: 18 },
+      { size: 'XL', stock: 15 },
+      { size: 'XXL', stock: 8 }
+    ],
+    color: 'Royal Midnight Blue',
+    brand: 'WellFIT Luxury Wedding',
+    stockQuantity: 53,
+    isFeatured: true,
+    isNewArrival: true,
+    isBestseller: true,
+    rating: 5.0,
+    numReviews: 87
+  },
+  {
+    name: 'Imperial Handcrafted Gold Zari Groom Sherwani Suit',
+    description: 'Breathtaking royal wedding attire handcrafted with intricate golden zari threadwork, mandarin collar with crystal buttons, tailored churidar trousers, and embroidered silk stole.',
+    category: 'men',
+    subCategory: 'wedding-suits',
+    targetAudience: 'Adult Men',
+    price: 42000,
+    originalPrice: 49000,
+    discount: 14,
+    images: [
+      'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=1000&auto=format&fit=crop'
+    ],
+    fabric: 'Raw Silk Jacquard with Pure Metallic Zari Embroidery',
+    fit: 'Royal Imperial Fit',
+    colors: [{ name: 'Ivory Gold', hex: '#FEF3C7' }],
+    sizes: [
+      { size: 'M', stock: 8 },
+      { size: 'L', stock: 12 },
+      { size: 'XL', stock: 10 },
+      { size: 'XXL', stock: 5 }
+    ],
+    color: 'Ivory Gold',
+    brand: 'WellFIT Royal Heritage',
+    stockQuantity: 35,
+    isFeatured: true,
+    isNewArrival: true,
+    isBestseller: true,
+    rating: 4.9,
+    numReviews: 64
+  },
+  {
+    name: 'Italian Cut Double-Breasted Charcoal Wedding Suit',
+    description: 'Impeccable Italian suiting design crafted from Super 140s worsted wool blend. Features 6-button double-breasted closure and structured roped shoulders.',
+    category: 'men',
+    subCategory: 'wedding-suits',
+    targetAudience: 'Adult Men',
+    price: 32500,
+    originalPrice: 37000,
+    discount: 12,
+    images: [
+      'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=1000&auto=format&fit=crop'
+    ],
+    fabric: 'Super 140s Worsted Wool & Cashmere Touch',
+    fit: 'Italian Modern Slim Fit',
+    colors: [{ name: 'Charcoal Grey', hex: '#374151' }],
+    sizes: [
+      { size: 'M', stock: 14 },
+      { size: 'L', stock: 16 },
+      { size: 'XL', stock: 14 },
+      { size: 'XXL', stock: 7 }
+    ],
+    color: 'Charcoal Grey',
+    brand: 'WellFIT Sartorial',
+    stockQuantity: 51,
+    isFeatured: true,
+    isBestseller: true,
+    rating: 4.9,
+    numReviews: 72
+  },
+
+  // 2. ADULT MEN CASUAL & FORMAL
   {
     name: 'Classic Oxford Button-Down Cotton Shirt',
     description: 'Tailored for the modern gentleman. Crafted from 100% breathable Egyptian Oxford cotton with reinforced collar, buttoned cuffs, and a flattering regular-slim profile.',

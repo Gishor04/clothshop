@@ -4,7 +4,7 @@ import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { useCompare } from '../context/CompareContext';
 import { QuickViewModal } from './QuickViewModal';
-import { ShoppingBag, Eye, Star, Heart, Sparkles, ArrowRightLeft } from 'lucide-react';
+import { ShoppingBag, Eye, Star, Heart, Sparkles, ArrowRightLeft, MessageCircle } from 'lucide-react';
 
 const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&auto=format&fit=crop';
 
@@ -199,15 +199,30 @@ export const ProductCard = ({ product }) => {
               <span className="text-[10px] text-emerald-700 font-bold block">In Stock</span>
             </div>
 
-            <button
-              onClick={handleQuickAdd}
-              disabled={product.stockQuantity === 0}
-              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-stone-900 hover:bg-indigo-600 text-white text-xs font-bold disabled:bg-stone-300 disabled:cursor-not-allowed transition-all shadow-md active:scale-95"
-              title="Add to Cart"
-            >
-              <ShoppingBag className="w-4 h-4" />
-              <span>Add</span>
-            </button>
+            <div className="flex items-center gap-1.5">
+              <a
+                href={`https://wa.me/94765554150?text=${encodeURIComponent(
+                  `Hi WellFIT, I'd like to order: ${product.name} (Size: ${selectedSize}, ${formattedPrice})`
+                )}`}
+                target="_blank"
+                rel="noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="p-2.5 rounded-2xl bg-[#25D366] hover:bg-[#20ba59] text-white shadow-sm transition-all active:scale-95 flex items-center justify-center"
+                title="Order via WhatsApp (+94 76 555 4150)"
+              >
+                <MessageCircle className="w-4 h-4" />
+              </a>
+
+              <button
+                onClick={handleQuickAdd}
+                disabled={product.stockQuantity === 0}
+                className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-stone-900 hover:bg-red-600 text-white text-xs font-bold disabled:bg-stone-300 disabled:cursor-not-allowed transition-all shadow-md active:scale-95"
+                title="Add to Cart"
+              >
+                <ShoppingBag className="w-4 h-4" />
+                <span>Add</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

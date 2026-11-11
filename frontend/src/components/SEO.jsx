@@ -3,10 +3,10 @@ import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 import { getCanonicalUrl, getSiteBaseUrl } from '../utils/seoHelpers';
 
-const DEFAULT_TITLE = 'Kaithady Clothing Boutique — Adults (M-XXL) & Kids Apparel';
+const DEFAULT_TITLE = "WellFIT — Specialist in Wedding Suits & Men's Wear | வாங்க இது நம்ம ஊர் கட";
 const DEFAULT_DESCRIPTION =
-  'Discover premium clothing at Kaithady Clothing Boutique. Fashion for Adult Men (M-XXL), Adult Women (M-XXL), Boys, and Girls. Enjoy free island-wide shipping & Cash on Delivery.';
-const SITE_NAME = 'Kaithady Clothing Boutique';
+  "WellFIT is Sri Lanka's specialist in Wedding Suits & Men's Wear. Curated 3-piece groom tuxedos, royal sherwanis, blazers, and celebration attire. Contact WhatsApp: +94 76 555 4150.";
+const SITE_NAME = 'WellFIT — Specialist in Wedding Suits';
 
 /**
  * Reusable SEO Component using react-helmet-async

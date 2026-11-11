@@ -7,14 +7,25 @@ export const MegaMenu = ({ isOpen, onClose }) => {
 
   const clothingCategories = [
     {
-      title: 'Adult Men’s Clothing',
+      title: 'Wedding Suits & Tuxedos',
+      path: '/products?category=men',
+      subtitle: 'Specialist Bespoke Suits',
+      items: [
+        { name: 'Royal Velvet 3-Piece Tuxedos', path: '/products?category=men' },
+        { name: 'Imperial Gold Zari Sherwanis', path: '/products?category=men' },
+        { name: 'Italian Double-Breasted Suits', path: '/products?category=men' },
+        { name: 'Velvet Shawl Lapel Blazers', path: '/products?category=men' },
+      ],
+    },
+    {
+      title: 'Men’s Shirts & Formal Trousers',
       path: '/products?category=men',
       subtitle: 'Sizes: M, L, XL, XXL',
       items: [
-        { name: 'Button-Down Oxford Shirts', path: '/products?category=men&subCategory=shirts' },
-        { name: 'Slim & Stretch Denim Jeans', path: '/products?category=men&subCategory=pants' },
-        { name: 'Heavyweight Cotton Tees', path: '/products?category=men&subCategory=t-shirts' },
-        { name: 'Biker Leather Jackets', path: '/products?category=men&subCategory=jackets' },
+        { name: 'Egyptian Cotton French-Cuff Shirts', path: '/products?category=men' },
+        { name: 'Button-Down Oxford Shirts', path: '/products?category=men' },
+        { name: 'Stretch Formal Dress Trousers', path: '/products?category=men' },
+        { name: 'Slim & Flex Denim Jeans', path: '/products?category=men' },
       ],
     },
     {
@@ -22,30 +33,21 @@ export const MegaMenu = ({ isOpen, onClose }) => {
       path: '/products?category=women',
       subtitle: 'Sizes: M, L, XL, XXL',
       items: [
-        { name: 'Silk Blend Midi Wrap Dresses', path: '/products?category=women&subCategory=dresses' },
-        { name: 'Double-Breasted Executive Blazers', path: '/products?category=women&subCategory=jackets' },
-        { name: 'High-Waisted Vintage Jeans', path: '/products?category=women&subCategory=pants' },
-        { name: 'Chiffon Tops & Blouses', path: '/products?category=women&subCategory=shirts' },
+        { name: 'Bridal Georgette & Silk Gowns', path: '/products?category=women' },
+        { name: 'Silk Blend Midi Wrap Dresses', path: '/products?category=women' },
+        { name: 'Double-Breasted Executive Blazers', path: '/products?category=women' },
+        { name: 'High-Waisted Vintage Flare Jeans', path: '/products?category=women' },
       ],
     },
     {
-      title: 'Child Men’s (Boys’ Apparel)',
+      title: 'Kids Wedding & Party Wear',
       path: '/products?category=boys',
       subtitle: 'Ages: 2-3Y, 4-5Y, 6-7Y, 8-9Y',
       items: [
-        { name: 'Dino Fleece Hoodies', path: '/products?category=boys&subCategory=hoodies' },
-        { name: 'Kids Denim Trucker Jackets', path: '/products?category=boys&subCategory=jackets' },
-        { name: 'Active Fleece Joggers', path: '/products?category=boys&subCategory=pants' },
-      ],
-    },
-    {
-      title: 'Child Women’s (Girls’ Apparel)',
-      path: '/products?category=girls',
-      subtitle: 'Ages: 2-3Y, 4-5Y, 6-7Y, 8-9Y',
-      items: [
-        { name: 'Sunshine Floral Summer Dresses', path: '/products?category=girls&subCategory=dresses' },
-        { name: 'Unicorn Sparkle Knit Sweaters', path: '/products?category=girls&subCategory=sweaters' },
-        { name: 'Cute Denim Overalls', path: '/products?category=girls&subCategory=pants' },
+        { name: 'Junior Royal Prince 3-Piece Suits', path: '/products?category=boys' },
+        { name: 'Sunshine Floral Twirl Dresses', path: '/products?category=girls' },
+        { name: 'Kids Denim Trucker Jackets', path: '/products?category=boys' },
+        { name: 'Unicorn Sparkle Knit Sweaters', path: '/products?category=girls' },
       ],
     },
   ];

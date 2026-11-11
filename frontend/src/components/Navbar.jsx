@@ -80,22 +80,23 @@ export const Navbar = () => {
       <div className="bg-stone-950 text-stone-200 text-[11px] font-semibold py-2 px-4 flex items-center justify-between border-b border-stone-800">
         <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <span className="hidden sm:inline-flex items-center gap-1 text-amber-400 font-bold">
-              <Sparkles className="w-3 h-3" /> Kaithady Avurudu Sale: Save 25% with Code AVURUDU25
+            <span className="inline-flex items-center gap-1.5 text-amber-400 font-extrabold">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span>WellFIT Wedding Specials · வாங்க இது நம்ம ஊர் கட</span>
             </span>
-            <span className="inline-flex items-center gap-1 text-stone-300">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Free Island-Wide Shipping over Rs. 10,000
+            <span className="hidden md:inline-flex items-center gap-1 text-stone-300">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Bespoke Suits &amp; Island-Wide Delivery
             </span>
           </div>
 
-          <div className="flex items-center gap-4 text-[10px] text-stone-400">
+          <div className="flex items-center gap-4 text-[10px] text-stone-300">
             <a
-              href="https://wa.me/94770000000?text=Hi%20Kaithady%20Clothing%20Boutique%2C%20I%27d%20like%20to%20order."
+              href="https://wa.me/94765554150?text=Hi%20WellFIT%2C%20I%27d%20like%20to%20order%20wedding%20suits%20and%20men%27s%20wear."
               target="_blank"
               rel="noreferrer"
-              className="hover:text-emerald-400 flex items-center gap-1 font-bold transition-colors"
+              className="hover:text-emerald-400 flex items-center gap-1.5 font-bold transition-colors bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-500/40 text-emerald-300"
             >
-              <Phone className="w-3 h-3 text-emerald-400" /> WhatsApp Order: +94 77 000 0000
+              <Phone className="w-3 h-3 text-emerald-400" /> WhatsApp: +94 76 555 4150
             </a>
             <Link to="/contact" className="hover:text-white transition-colors hidden md:inline">
               Store Locator
@@ -108,54 +109,71 @@ export const Navbar = () => {
       <nav
         className={`w-full transition-all duration-300 ${
           isScrolled
-            ? 'bg-white/95 backdrop-blur-xl shadow-md border-b border-stone-200 py-3'
-            : 'bg-white border-b border-stone-100 py-4'
+            ? 'bg-white/95 backdrop-blur-xl shadow-md border-b border-stone-200 py-2.5'
+            : 'bg-white border-b border-stone-100 py-3.5'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           
           {/* Brand Logo */}
           <div className="flex items-center gap-8">
-            <Link to="/" className="group flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-2xl bg-indigo-700 text-white font-black text-xl flex items-center justify-center shadow-md group-hover:bg-indigo-600 transition-all">
-                K
+            <Link to="/" className="group flex items-center gap-3">
+              <div className="relative w-11 h-11 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-amber-400 shadow-md group-hover:scale-105 transition-all bg-black flex-shrink-0">
+                <img
+                  src="/wellfit-logo.jpg"
+                  alt="WellFIT Specialist in Wedding Suits"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div className="flex flex-col">
-                <span className="text-xl font-black tracking-tight text-stone-900 leading-none group-hover:text-indigo-700 transition-colors">
-                  KAITHADY
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xl sm:text-2xl font-black tracking-tight leading-none group-hover:text-red-600 transition-colors">
+                    <span className="text-amber-500">Well</span>
+                    <span className="text-red-600">FIT</span>
+                  </span>
+                  <span className="hidden sm:inline-block px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-wider bg-red-600 text-white shadow-xs">
+                    Wedding Suits
+                  </span>
+                </div>
+                <span className="text-[9px] uppercase tracking-wider font-extrabold text-stone-800">
+                  Specialist in Wedding Suits
                 </span>
-                <span className="text-[9px] uppercase tracking-widest font-black text-indigo-700">
-                  Clothing Boutique
+                <span className="text-[10px] font-bold text-amber-600 -mt-0.5">
+                  வாங்க இது நம்ம ஊர் கட
                 </span>
               </div>
             </Link>
 
             {/* Desktop Navigation Links */}
-            <div className="hidden lg:flex items-center gap-6 text-xs font-black uppercase tracking-wider text-stone-700">
-              <Link to="/products" className="hover:text-indigo-700 transition-colors">
+            <div className="hidden lg:flex items-center gap-5 text-xs font-black uppercase tracking-wider text-stone-700">
+              <Link to="/products" className="hover:text-red-600 transition-colors">
                 Shop All
+              </Link>
+
+              <Link
+                to="/products?category=men"
+                className="text-red-600 hover:text-red-700 flex items-center gap-1 font-black transition-colors"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Wedding Suits &amp; Men
               </Link>
               
               <button
                 onMouseEnter={() => setMegaMenuOpen(true)}
                 onClick={() => setMegaMenuOpen(!megaMenuOpen)}
-                className="flex items-center gap-1 hover:text-indigo-700 transition-colors py-2"
+                className="flex items-center gap-1 hover:text-red-600 transition-colors py-2"
               >
-                <span>Departments</span>
+                <span>Collections</span>
                 <ChevronDown className="w-3.5 h-3.5" />
               </button>
 
-              <Link to="/products?category=men" className="hover:text-indigo-700 transition-colors text-indigo-950 font-black">
-                Adult Men (M-XXL)
+              <Link to="/products?category=women" className="hover:text-rose-700 transition-colors text-stone-700">
+                Women's Wear
               </Link>
-              <Link to="/products?category=women" className="hover:text-rose-700 transition-colors text-rose-950 font-black">
-                Adult Women (M-XXL)
+              <Link to="/products?category=boys" className="hover:text-amber-700 transition-colors text-stone-700">
+                Boys' Suits &amp; Wear
               </Link>
-              <Link to="/products?category=boys" className="hover:text-amber-700 transition-colors text-amber-950">
-                Child Men (Boys)
-              </Link>
-              <Link to="/products?category=girls" className="hover:text-purple-700 transition-colors text-purple-950">
-                Child Women (Girls)
+              <Link to="/products?category=girls" className="hover:text-purple-700 transition-colors text-stone-700">
+                Girls' Wear
               </Link>
 
               <Link
@@ -248,16 +266,16 @@ export const Navbar = () => {
                   <Link
                     to="/orders"
                     onClick={() => setProfileDropdownOpen(false)}
-                    className="block px-4 py-2 text-stone-700 hover:bg-stone-50 hover:text-indigo-700"
+                    className="block px-4 py-2 text-stone-700 hover:bg-stone-50 hover:text-red-600"
                   >
-                    My Kaithady Orders
+                    My WellFIT Orders
                   </Link>
 
                   {user.role === 'admin' && (
                     <Link
                       to="/admin"
                       onClick={() => setProfileDropdownOpen(false)}
-                      className="block px-4 py-2 text-indigo-700 font-bold hover:bg-indigo-50"
+                      className="block px-4 py-2 text-red-600 font-bold hover:bg-red-50"
                     >
                       Admin Dashboard
                     </Link>
@@ -297,11 +315,16 @@ export const Navbar = () => {
           <div className="w-4/5 max-w-sm bg-white h-full shadow-2xl p-6 flex flex-col justify-between overflow-y-auto">
             <div className="space-y-6">
               <div className="flex items-center justify-between border-b pb-4">
-                <Link to="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-xl bg-indigo-700 text-white font-black flex items-center justify-center text-base">
-                    K
+                <Link to="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-full overflow-hidden border border-amber-400 bg-black flex-shrink-0">
+                    <img src="/wellfit-logo.jpg" alt="WellFIT" className="w-full h-full object-cover" />
                   </div>
-                  <span className="font-black text-lg text-stone-900">KAITHADY BOUTIQUE</span>
+                  <div>
+                    <span className="font-black text-lg text-stone-900 leading-none block">
+                      <span className="text-amber-500">Well</span><span className="text-red-600">FIT</span>
+                    </span>
+                    <span className="text-[9px] font-extrabold text-amber-700">வாங்க இது நம்ம ஊர் கட</span>
+                  </div>
                 </Link>
                 <button onClick={() => setMobileMenuOpen(false)} className="p-2 text-stone-500">
                   <X className="w-5 h-5" />
@@ -312,17 +335,17 @@ export const Navbar = () => {
                 <Link to="/products" onClick={() => setMobileMenuOpen(false)} className="py-2 border-b">
                   Shop All Apparel
                 </Link>
-                <Link to="/products?category=men" onClick={() => setMobileMenuOpen(false)} className="py-2 border-b text-indigo-700">
-                  Adult Men's Collection (M, L, XL, XXL)
+                <Link to="/products?category=men" onClick={() => setMobileMenuOpen(false)} className="py-2 border-b text-red-600 font-black">
+                  Wedding Suits &amp; Men's Collection
                 </Link>
                 <Link to="/products?category=women" onClick={() => setMobileMenuOpen(false)} className="py-2 border-b text-rose-700">
-                  Adult Women's Collection (M, L, XL, XXL)
+                  Women's Dresses &amp; Suits
                 </Link>
                 <Link to="/products?category=boys" onClick={() => setMobileMenuOpen(false)} className="py-2 border-b text-amber-700">
-                  Child Men's Fashion (Boys)
+                  Boys' Wedding &amp; Casual Suits
                 </Link>
                 <Link to="/products?category=girls" onClick={() => setMobileMenuOpen(false)} className="py-2 border-b text-purple-700">
-                  Child Women's Wear (Girls)
+                  Girls' Collection
                 </Link>
                 <Link to="/contact" onClick={() => setMobileMenuOpen(false)} className="py-2 border-b">
                   Store Hours &amp; Location
@@ -332,12 +355,12 @@ export const Navbar = () => {
 
             <div className="space-y-3 pt-6 border-t">
               <a
-                href="https://wa.me/94770000000?text=Hi%20Kaithady%20Clothing%20Boutique%2C%20I%27d%20like%20to%20order."
+                href="https://wa.me/94765554150?text=Hi%20WellFIT%2C%20I%27d%20like%20to%20order%20wedding%20suits%20and%20men%27s%20wear."
                 target="_blank"
                 rel="noreferrer"
-                className="w-full py-3 bg-emerald-600 text-white rounded-2xl text-xs font-bold flex items-center justify-center gap-2 shadow-md"
+                className="w-full py-3 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-2xl text-xs font-bold flex items-center justify-center gap-2 shadow-md"
               >
-                <Phone className="w-4 h-4" /> Order via WhatsApp
+                <Phone className="w-4 h-4" /> WhatsApp: +94 76 555 4150
               </a>
             </div>
           </div>
@@ -354,7 +377,7 @@ export const Navbar = () => {
                 <input
                   type="text"
                   autoFocus
-                  placeholder="Search Kaithady clothing (e.g. Oxford, Silk Dress, Jeans, Hoodie)..."
+                  placeholder="Search WellFIT Wedding Suits, Sherwanis, Blazers, Shirts..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full bg-transparent text-sm font-bold text-stone-900 focus:outline-none"

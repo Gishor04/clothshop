@@ -19,20 +19,20 @@ export const ContactPage = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12 font-['Plus_Jakarta_Sans',sans-serif]">
       <SEO
-        title="Contact Us & Customer Support"
-        description="Get in touch with Kaithady Clothing Boutique. Contact customer support for sizing guidance, order tracking, and delivery inquiries."
+        title="Contact WellFIT — Wedding Suit Fitting & Orders"
+        description="Get in touch with WellFIT Specialist in Wedding Suits & Men's Wear. Book suit fitting measurements or order on WhatsApp: +94 76 555 4150."
         schema={generateOrganizationSchema()}
       />
 
       <div className="text-center max-w-2xl mx-auto space-y-2">
-        <span className="text-indigo-600 font-extrabold text-xs uppercase tracking-widest">
-          Get in Touch with Kaithady Boutique
+        <span className="text-red-600 font-extrabold text-xs uppercase tracking-widest">
+          வாங்க இது நம்ம ஊர் கட · Get in Touch with WellFIT
         </span>
         <h1 className="text-3xl sm:text-4xl font-black text-stone-900 tracking-tight">
-          We’d Love to Hear From You
+          Wedding Suit Consultations &amp; Customer Care
         </h1>
         <p className="text-xs sm:text-sm text-stone-500 font-medium">
-          Have a question about fabric details, adult & kids sizing, or order delivery? Reach out to our Kaithady support team.
+          Have a question about bespoke wedding suit tailoring, fabric selection, groomsmen packages, or sizes? Reach out to ishaq and the WellFIT team.
         </p>
       </div>
 
@@ -112,22 +112,30 @@ export const ContactPage = () => {
         {/* Right Column: Contact Details & Google Maps Embed */}
         <div className="space-y-6">
           <div className="bg-stone-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl space-y-6 border border-stone-800">
-            <h2 className="text-xl font-black text-amber-200">Flagship Boutique &amp; Workshop</h2>
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-full overflow-hidden border border-amber-400 bg-black flex-shrink-0">
+                <img src="/wellfit-logo.jpg" alt="WellFIT" className="w-full h-full object-cover" />
+              </div>
+              <div>
+                <h2 className="text-xl font-black text-amber-200">WellFIT Flagship Store</h2>
+                <span className="text-xs text-stone-400 font-bold">வாங்க இது நம்ம ஊர் கட</span>
+              </div>
+            </div>
 
             <div className="space-y-4 text-xs font-semibold text-stone-300">
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-extrabold text-white block">Colombo Store Address</span>
-                  <span>123 Galle Road, Kollupitiya, Colombo 03, Sri Lanka</span>
+                  <span className="font-extrabold text-white block">Main Boutique Address</span>
+                  <span>WellFIT Specialist in Wedding Suits &amp; Men's Wear, Sri Lanka</span>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
                 <Phone className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-extrabold text-white block">Direct Phone &amp; WhatsApp Order</span>
-                  <span>+94 77 000 0000 / +94 11 234 5678</span>
+                  <span className="font-extrabold text-white block">Direct WhatsApp &amp; Business Line</span>
+                  <span>+94 76 555 4150 (ishaq / WellFIT Team)</span>
                 </div>
               </div>
 
@@ -135,7 +143,7 @@ export const ContactPage = () => {
                 <Mail className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
                 <div>
                   <span className="font-extrabold text-white block">Customer Support Email</span>
-                  <span>hello@kottuba.lk / orders@kottuba.lk</span>
+                  <span>contact@wellfitsuits.lk / orders@wellfitsuits.lk</span>
                 </div>
               </div>
 
@@ -143,20 +151,20 @@ export const ContactPage = () => {
                 <Clock className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
                 <div>
                   <span className="font-extrabold text-white block">Boutique Operating Hours</span>
-                  <span>Monday – Saturday: 9:00 AM – 7:00 PM</span> <br />
-                  <span>Sunday: 10:00 AM – 5:00 PM</span>
+                  <span>Monday – Saturday: 9:00 AM – 8:00 PM</span> <br />
+                  <span>Sunday: 10:00 AM – 6:00 PM (Wedding fittings by appointment)</span>
                 </div>
               </div>
             </div>
 
             <div className="pt-2">
               <a
-                href="https://wa.me/94770000000?text=Hi%20Kottuba%2C%20I%27d%20like%20to%20order."
+                href="https://wa.me/94765554150?text=Hi%20WellFIT%2C%20I%27d%20like%20to%20order%20or%20inquire%20about%20wedding%20suits."
                 target="_blank"
                 rel="noreferrer"
-                className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl text-xs font-black flex items-center justify-center gap-2 shadow-md transition-all uppercase tracking-wider"
+                className="w-full py-3.5 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-2xl text-xs font-black flex items-center justify-center gap-2 shadow-md transition-all uppercase tracking-wider"
               >
-                <Phone className="w-4 h-4" /> WhatsApp Order &amp; Consultation
+                <Phone className="w-4 h-4" /> WhatsApp Order &amp; Consultation (+94 76 555 4150)
               </a>
             </div>
           </div>

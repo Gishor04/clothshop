@@ -107,15 +107,15 @@ export const FaqPage = () => {
       <div className="bg-stone-900 text-white rounded-3xl p-8 text-center space-y-4 border border-stone-800">
         <h3 className="text-xl font-black text-amber-200">Still Have Questions?</h3>
         <p className="text-xs text-stone-300 max-w-sm mx-auto">
-          Our customer service team in Colombo is available Mon-Sat to assist you via WhatsApp or phone.
+          Our WellFIT tailoring &amp; support team is available Mon-Sat to assist you with wedding suit measurements and order inquiries.
         </p>
         <a
-          href="https://wa.me/94770000000?text=Hi%20Kottuba%2C%20I%27d%20like%20to%20ask%20a%20question."
+          href="https://wa.me/94765554150?text=Hi%20WellFIT%2C%20I%27d%20like%20to%20ask%20a%20question%20about%20your%20wedding%20suits."
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-2 px-6 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-2xl shadow-lg"
+          className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold rounded-2xl shadow-lg"
         >
-          <Phone className="w-4 h-4" /> Ask via WhatsApp
+          <Phone className="w-4 h-4" /> Ask via WhatsApp (+94 76 555 4150)
         </a>
       </div>
 

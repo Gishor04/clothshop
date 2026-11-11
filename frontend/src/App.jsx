@@ -8,6 +8,7 @@ import { CompareProvider } from './context/CompareContext';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { CartDrawer } from './components/CartDrawer';
+import { WhatsAppFloatingButton } from './components/WhatsAppFloatingButton';
 
 import { HomePage } from './pages/HomePage';
 import { ProductListPage } from './pages/ProductListPage';
@@ -50,6 +51,7 @@ const ShopLayout = ({ children }) => (
     <Footer />
     <ToastNotification />
     <CartDrawer />
+    <WhatsAppFloatingButton />
   </div>
 );
 
